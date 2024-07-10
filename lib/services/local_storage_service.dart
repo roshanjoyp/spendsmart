@@ -6,17 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:spendsmart/app/app.logger.dart';
+import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/models/local/user_data_model.dart';
 import 'package:stacked/stacked.dart';
 
 class LocalStorageService with ListenableServiceMixin {
   final logger = getLogger('LocalStorageService');
   UserDataModel? _userData;
+  final List<ExpenseDataModel> _expenses = [];
 
   late BoxCollection _appDB;
   late CollectionBox _userDataBox;
+  late CollectionBox _expenseDataBox;
 
   UserDataModel? get userData => _userData;
+  List<ExpenseDataModel> get expenses => _expenses;
 
   final Completer<void> _initializationCompleter = Completer<void>();
   Future<void> get initializationCompleted => _initializationCompleter.future;
@@ -35,9 +39,7 @@ class LocalStorageService with ListenableServiceMixin {
       Hive.registerAdapter(UserDataModelAdapter());
       _appDB = await BoxCollection.open(
         'userCollection', // Name of your database
-        {
-          'userData',
-        }, // Names of your boxes
+        {'userData', 'expenseData'}, // Names of your boxes
       );
     } else {
       _directory = await getApplicationDocumentsDirectory();
@@ -47,9 +49,7 @@ class LocalStorageService with ListenableServiceMixin {
       Hive.registerAdapter(UserDataModelAdapter());
       _appDB = await BoxCollection.open(
         'userCollection', // Name of your database
-        {
-          'userData',
-        }, // Names of your boxes
+        {'userData', 'expenseData'}, // Names of your boxes
         path: dbPath,
       );
     }
@@ -67,7 +67,13 @@ class LocalStorageService with ListenableServiceMixin {
       logger.e(e);
     }
 
-    if (_userData != null) {}
+    if (_userData != null) {
+      _expenseDataBox = await _appDB.openBox<ExpenseDataModel>('expenseData');
+      Map<String, dynamic> items = (await _expenseDataBox.getAllValues());
+      items.forEach((key, value) {
+        _expenses.add(ExpenseDataModel.fromJson(value));
+      });
+    }
 
     _initializationCompleter.complete();
   }

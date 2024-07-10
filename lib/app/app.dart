@@ -6,6 +6,8 @@ import 'package:spendsmart/ui/views/language/language_view.dart';
 import 'package:spendsmart/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:spendsmart/services/user_service.dart';
+import 'package:spendsmart/services/expense_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -21,6 +23,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: LocalStorageService),
+    LazySingleton(classType: UserService),
+    LazySingleton(classType: ExpenseService),
 // @stacked-service
   ],
   bottomsheets: [

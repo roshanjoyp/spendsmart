@@ -3,6 +3,8 @@ import 'package:mockito/mockito.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:spendsmart/services/local_storage_service.dart';
+import 'package:spendsmart/services/user_service.dart';
+import 'package:spendsmart/services/expense_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -12,6 +14,8 @@ import 'test_helpers.mocks.dart';
   MockSpec<BottomSheetService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<LocalStorageService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<UserService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<ExpenseService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -19,6 +23,8 @@ void registerServices() {
   getAndRegisterBottomSheetService();
   getAndRegisterDialogService();
   getAndRegisterLocalStorageService();
+  getAndRegisterUserService();
+  getAndRegisterExpenseService();
 // @stacked-mock-register
 }
 
@@ -76,6 +82,20 @@ MockLocalStorageService getAndRegisterLocalStorageService() {
   _removeRegistrationIfExists<LocalStorageService>();
   final service = MockLocalStorageService();
   locator.registerSingleton<LocalStorageService>(service);
+  return service;
+}
+
+MockUserService getAndRegisterUserService() {
+  _removeRegistrationIfExists<UserService>();
+  final service = MockUserService();
+  locator.registerSingleton<UserService>(service);
+  return service;
+}
+
+MockExpenseService getAndRegisterExpenseService() {
+  _removeRegistrationIfExists<ExpenseService>();
+  final service = MockExpenseService();
+  locator.registerSingleton<ExpenseService>(service);
   return service;
 }
 // @stacked-mock-create
