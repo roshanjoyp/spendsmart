@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/app/app.bottomsheets.dart';
 import 'package:spendsmart/app/app.dialogs.dart';
 import 'package:spendsmart/app/app.locator.dart';
@@ -27,6 +28,8 @@ class MainApp extends StatelessWidget {
         builder: (context, model, child) {
           return MaterialApp(
             locale: model.currentLocale,
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
             initialRoute: Routes.startupView,
             onGenerateRoute: StackedRouter().onGenerateRoute,
             navigatorKey: StackedService.navigatorKey,

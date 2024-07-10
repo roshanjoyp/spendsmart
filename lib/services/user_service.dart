@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/models/local/user_data_model.dart';
 import 'package:spendsmart/services/local_storage_service.dart';
@@ -14,5 +12,5 @@ class UserService with ListenableServiceMixin {
     listenToReactiveValues([_localStorageService.userData]);
   }
 
-  Locale get locale => Locale(userData?.language ?? 'en');
+  String? get languageString => userData?.language;
 }
