@@ -10,16 +10,20 @@ import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/models/local/user_settings_model.dart';
 import 'package:stacked/stacked.dart';
 
+const String userCollectionString = 'userCollection';
+const String userSettingsDataBoxString = 'userSettingsDataBox';
+const String expenseDataBoxString = 'expenseDataBox';
+
 class LocalStorageService with ListenableServiceMixin {
   final logger = getLogger('LocalStorageService');
-  UserSettingsModel? _userData;
+  UserSettingsModel? _userSettingsData;
   final List<ExpenseDataModel> _expenses = [];
 
   late BoxCollection _appDB;
-  late CollectionBox _userDataBox;
+  late CollectionBox _userSettingsDataBox;
   late CollectionBox _expenseDataBox;
 
-  UserSettingsModel? get userData => _userData;
+  UserSettingsModel? get userSettingsData => _userSettingsData;
   List<ExpenseDataModel> get expenses => _expenses;
 
   final Completer<void> _initializationCompleter = Completer<void>();
@@ -38,8 +42,11 @@ class LocalStorageService with ListenableServiceMixin {
       await Hive.initFlutter();
       Hive.registerAdapter(UserSettingsModelAdapter());
       _appDB = await BoxCollection.open(
-        'userCollection', // Name of your database
-        {'userData', 'expenseData'}, // Names of your boxes
+        userCollectionString, // Name of your database
+        {
+          userSettingsDataBoxString,
+          expenseDataBoxString
+        }, // Names of your boxes
       );
     } else {
       _directory = await getApplicationDocumentsDirectory();
@@ -48,27 +55,32 @@ class LocalStorageService with ListenableServiceMixin {
       await Hive.initFlutter(dbPath);
       Hive.registerAdapter(UserSettingsModelAdapter());
       _appDB = await BoxCollection.open(
-        'userCollection', // Name of your database
-        {'userData', 'expenseData'}, // Names of your boxes
+        userCollectionString, // Name of your database
+        {
+          userSettingsDataBoxString,
+          expenseDataBoxString
+        }, // Names of your boxes
         path: dbPath,
       );
     }
 
-    _userDataBox = await _appDB.openBox<dynamic>('userData');
+    _userSettingsDataBox =
+        await _appDB.openBox<dynamic>(userSettingsDataBoxString);
 
-    Map<String, dynamic> data =
-        Map.from((await _userDataBox.get("localUserData")) ?? {});
+    Map<String, dynamic> data = Map.from(
+        (await _userSettingsDataBox.get("localUserSettingsData")) ?? {});
 
     try {
-      _userData = data == {} ? null : UserSettingsModel.fromJson(data);
+      _userSettingsData = data == {} ? null : UserSettingsModel.fromJson(data);
     } on TypeError {
       logger.i("Type Error");
     } catch (e) {
       logger.e(e);
     }
 
-    if (_userData != null) {
-      _expenseDataBox = await _appDB.openBox<ExpenseDataModel>('expenseData');
+    if (_userSettingsData != null) {
+      _expenseDataBox =
+          await _appDB.openBox<ExpenseDataModel>(expenseDataBoxString);
       Map<String, dynamic> items = (await _expenseDataBox.getAllValues());
       items.forEach((key, value) {
         _expenses.add(ExpenseDataModel.fromJson(value));

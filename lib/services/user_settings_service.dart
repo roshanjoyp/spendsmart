@@ -6,11 +6,12 @@ import 'package:stacked/stacked.dart';
 class UserSettingsService with ListenableServiceMixin {
   final LocalStorageService _localStorageService =
       locator<LocalStorageService>();
-  UserSettingsModel? get userData => _localStorageService.userData;
+  UserSettingsModel? get userSettingsData =>
+      _localStorageService.userSettingsData;
 
   UserSettingsService() {
-    listenToReactiveValues([_localStorageService.userData]);
+    listenToReactiveValues([_localStorageService.userSettingsData]);
   }
 
-  String? get languageString => userData?.language;
+  String? get languageString => userSettingsData?.language;
 }

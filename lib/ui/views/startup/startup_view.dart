@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:stacked/stacked.dart';
 import 'package:spendsmart/ui/common/ui_helpers.dart';
+import 'package:stacked/stacked.dart';
 
 import 'startup_viewmodel.dart';
 
@@ -20,7 +20,7 @@ class StartupView extends StackedView<StartupViewModel> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'STACKED',
+              'Spendsmart',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
             ),
             Row(
