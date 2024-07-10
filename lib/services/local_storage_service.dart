@@ -7,19 +7,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:spendsmart/app/app.logger.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
-import 'package:spendsmart/models/local/user_data_model.dart';
+import 'package:spendsmart/models/local/user_settings_model.dart';
 import 'package:stacked/stacked.dart';
 
 class LocalStorageService with ListenableServiceMixin {
   final logger = getLogger('LocalStorageService');
-  UserDataModel? _userData;
+  UserSettingsModel? _userData;
   final List<ExpenseDataModel> _expenses = [];
 
   late BoxCollection _appDB;
   late CollectionBox _userDataBox;
   late CollectionBox _expenseDataBox;
 
-  UserDataModel? get userData => _userData;
+  UserSettingsModel? get userData => _userData;
   List<ExpenseDataModel> get expenses => _expenses;
 
   final Completer<void> _initializationCompleter = Completer<void>();
@@ -36,7 +36,7 @@ class LocalStorageService with ListenableServiceMixin {
     WidgetsFlutterBinding.ensureInitialized();
     if (kIsWeb) {
       await Hive.initFlutter();
-      Hive.registerAdapter(UserDataModelAdapter());
+      Hive.registerAdapter(UserSettingsModelAdapter());
       _appDB = await BoxCollection.open(
         'userCollection', // Name of your database
         {'userData', 'expenseData'}, // Names of your boxes
@@ -46,7 +46,7 @@ class LocalStorageService with ListenableServiceMixin {
       await _directory.create(recursive: true);
       var dbPath = '${_directory.path}/spendSmartDB';
       await Hive.initFlutter(dbPath);
-      Hive.registerAdapter(UserDataModelAdapter());
+      Hive.registerAdapter(UserSettingsModelAdapter());
       _appDB = await BoxCollection.open(
         'userCollection', // Name of your database
         {'userData', 'expenseData'}, // Names of your boxes
@@ -60,7 +60,7 @@ class LocalStorageService with ListenableServiceMixin {
         Map.from((await _userDataBox.get("localUserData")) ?? {});
 
     try {
-      _userData = data == {} ? null : UserDataModel.fromJson(data);
+      _userData = data == {} ? null : UserSettingsModel.fromJson(data);
     } on TypeError {
       logger.i("Type Error");
     } catch (e) {

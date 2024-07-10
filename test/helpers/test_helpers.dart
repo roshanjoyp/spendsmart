@@ -1,10 +1,11 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:spendsmart/app/app.locator.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:spendsmart/services/local_storage_service.dart';
-import 'package:spendsmart/services/user_service.dart';
 import 'package:spendsmart/services/expense_service.dart';
+import 'package:spendsmart/services/local_storage_service.dart';
+import 'package:spendsmart/services/user_settings_service.dart';
+import 'package:stacked_services/stacked_services.dart';
+
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -14,8 +15,8 @@ import 'test_helpers.mocks.dart';
   MockSpec<BottomSheetService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<LocalStorageService>(onMissingStub: OnMissingStub.returnDefault),
-  MockSpec<UserService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<ExpenseService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<UserSettingsService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -23,8 +24,8 @@ void registerServices() {
   getAndRegisterBottomSheetService();
   getAndRegisterDialogService();
   getAndRegisterLocalStorageService();
-  getAndRegisterUserService();
   getAndRegisterExpenseService();
+  getAndRegisterUserSettingsService();
 // @stacked-mock-register
 }
 
@@ -85,17 +86,17 @@ MockLocalStorageService getAndRegisterLocalStorageService() {
   return service;
 }
 
-MockUserService getAndRegisterUserService() {
-  _removeRegistrationIfExists<UserService>();
-  final service = MockUserService();
-  locator.registerSingleton<UserService>(service);
-  return service;
-}
-
 MockExpenseService getAndRegisterExpenseService() {
   _removeRegistrationIfExists<ExpenseService>();
   final service = MockExpenseService();
   locator.registerSingleton<ExpenseService>(service);
+  return service;
+}
+
+MockUserSettingsService getAndRegisterUserSettingsService() {
+  _removeRegistrationIfExists<UserSettingsService>();
+  final service = MockUserSettingsService();
+  locator.registerSingleton<UserSettingsService>(service);
   return service;
 }
 // @stacked-mock-create

@@ -10,9 +10,10 @@ import 'package:flutter/material.dart' as _i5;
 import 'package:logger/src/logger.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i4;
+import 'package:spendsmart/models/local/expense_data_model.dart' as _i9;
 import 'package:spendsmart/services/expense_service.dart' as _i10;
 import 'package:spendsmart/services/local_storage_service.dart' as _i8;
-import 'package:spendsmart/services/user_service.dart' as _i9;
+import 'package:spendsmart/services/user_settings_service.dart' as _i11;
 import 'package:stacked_services/stacked_services.dart' as _i3;
 
 // ignore_for_file: type=lint
@@ -704,6 +705,13 @@ class MockLocalStorageService extends _i1.Mock
       ) as _i2.Logger);
 
   @override
+  List<_i9.ExpenseDataModel> get expenses => (super.noSuchMethod(
+        Invocation.getter(#expenses),
+        returnValue: <_i9.ExpenseDataModel>[],
+        returnValueForMissingStub: <_i9.ExpenseDataModel>[],
+      ) as List<_i9.ExpenseDataModel>);
+
+  @override
   _i6.Future<void> get initializationCompleted => (super.noSuchMethod(
         Invocation.getter(#initializationCompleted),
         returnValue: _i6.Future<void>.value(),
@@ -755,12 +763,57 @@ class MockLocalStorageService extends _i1.Mock
       );
 }
 
-/// A class which mocks [UserService].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockUserService extends _i1.Mock implements _i9.UserService {}
-
 /// A class which mocks [ExpenseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {}
+
+/// A class which mocks [UserSettingsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserSettingsService extends _i1.Mock
+    implements _i11.UserSettingsService {
+  @override
+  int get listenersCount => (super.noSuchMethod(
+        Invocation.getter(#listenersCount),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
+  void listenToReactiveValues(List<dynamic>? reactiveValues) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #listenToReactiveValues,
+          [reactiveValues],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
