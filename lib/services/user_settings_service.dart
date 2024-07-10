@@ -14,4 +14,12 @@ class UserSettingsService with ListenableServiceMixin {
   }
 
   String? get languageString => userSettingsData?.language;
+
+  void updateUserSettings(UserSettingsModel data) async {
+    _localStorageService.setUserSettingsData(data);
+  }
+
+  void saveUserSettingsData() async {
+    _localStorageService.saveUserSettingsData();
+  }
 }

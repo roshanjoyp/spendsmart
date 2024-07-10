@@ -1,35 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:spendsmart/models/app/currency_model.dart';
+import 'package:spendsmart/models/app/language_model.dart';
 import 'package:spendsmart/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
 
 import 'language_viewmodel.dart';
-
-final List<String> languages = [
-  "Arabic",
-  "Bengali",
-  "Chinese (Simplified)",
-  "English",
-  "French",
-  "Hindi",
-  "Portuguese",
-  "Russian",
-  "Spanish",
-  "Urdu",
-];
-
-final List<String> currencies = [
-  "USD",
-  "EUR",
-  "GBP",
-  "INR",
-  "JPY",
-  "CNY",
-  "CAD",
-  "AUD",
-  "CHF",
-  "RUB",
-];
 
 class LanguageView extends StackedView<LanguageViewModel> {
   const LanguageView({Key? key}) : super(key: key);
@@ -72,7 +48,9 @@ class LanguageView extends StackedView<LanguageViewModel> {
                           title: viewModel.selectedLanguageValue,
                           expanded: viewModel.isLanguageSheetExpanded,
                           onTap: viewModel.expandLanguageSheetTapped,
-                          list: languages,
+                          list: languages
+                              .map((e) => e.englishLanguageName)
+                              .toList(),
                           icon: Icons.language,
                           selectedValue: viewModel.selectedLanguageValue,
                           onSelected: (String value) {
@@ -98,10 +76,14 @@ class LanguageView extends StackedView<LanguageViewModel> {
                           title: viewModel.selectedCurrencyValue,
                           expanded: viewModel.isCurrencySheetExpanded,
                           onTap: viewModel.expandCurrencySheetTapped,
-                          list: currencies,
+                          list: currencies.map((e) => e.currency).toList(),
                           icon: Icons.currency_rupee_outlined,
                           selectedValue: viewModel.selectedCurrencyValue,
-                          onSelected: (String value) {
+                          isCurrency: true,
+                          currency: viewModel.selectedCurrencySymbol,
+                          currencies: currencies
+                              .map((e) => e.currencySymbol)
+                              .toList(), onSelected: (String value) {
                         viewModel.setSelectedCurrency(value);
                       }),
                     ],
@@ -111,7 +93,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  // Handle continue button press
+                  viewModel.saveAndContinue();
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
@@ -143,7 +125,12 @@ class LanguageView extends StackedView<LanguageViewModel> {
     required String selectedValue,
     required IconData icon,
     required Function(String) onSelected,
+    bool isCurrency = false,
+    String? currency,
+    List<String>? currencies,
   }) {
+    double dropdownHeight = (list.length * 50.0) + 16;
+    if (dropdownHeight > 300) dropdownHeight = 300;
     return Center(
       child: Column(
         children: [
@@ -154,18 +141,25 @@ class LanguageView extends StackedView<LanguageViewModel> {
               color: Colors.white,
             ),
             width: double.infinity,
-            child: ListTile(
-              leading: Icon(icon),
-              title: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+            child: GestureDetector(
+              onTap: onTap,
+              child: ListTile(
+                leading: isCurrency
+                    ? FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          currency!,
+                          style: const TextStyle(fontSize: 20),
+                        ))
+                    : Icon(icon),
+                title: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              trailing: GestureDetector(
-                onTap: onTap,
-                child: AnimatedRotation(
+                trailing: AnimatedRotation(
                   turns: expanded ? 0.5 : 0,
                   duration: const Duration(milliseconds: 300),
                   child: const Icon(Icons.expand_more),
@@ -183,7 +177,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
               color: Colors.white,
             ),
             clipBehavior: Clip.hardEdge,
-            height: expanded ? 300 : 0,
+            height: expanded ? dropdownHeight : 0,
             child: expanded
                 ? ListView.separated(
                     separatorBuilder: (context, index) {
@@ -195,33 +189,30 @@ class LanguageView extends StackedView<LanguageViewModel> {
                     itemBuilder: (context, index) {
                       Widget? trailing = selectedValue == list[index]
                           ? const Padding(
-                              padding: EdgeInsets.all(16.0),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16),
                               child: Icon(Icons.check),
                             )
                           : null;
                       return GestureDetector(
                         onTap: () => onSelected(list[index]),
-                        child: SizedBox(
+                        child: Container(
                           height: 50,
                           width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 16),
-                                child: Text(
-                                  list[index],
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                              trailing ?? Container(),
-                            ],
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: ListTile(
+                            leading: isCurrency
+                                ? FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: Text(
+                                      currencies![index],
+                                      style: const TextStyle(fontSize: 20),
+                                    ))
+                                : null,
+                            title: Text(
+                              list[index],
+                            ),
+                            trailing: trailing,
                           ),
                         ).animate(target: expanded ? 1 : 0).fadeIn(
                             delay: Duration(

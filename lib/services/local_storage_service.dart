@@ -89,4 +89,16 @@ class LocalStorageService with ListenableServiceMixin {
 
     _initializationCompleter.complete();
   }
+
+  void setUserSettingsData(UserSettingsModel data) async {
+    _userSettingsData = data;
+    notifyListeners();
+  }
+
+  void saveUserSettingsData() async {
+    if (_userSettingsData != null) {
+      await _userSettingsDataBox.put(
+          "localUserSettingsData", _userSettingsData!.toJson());
+    }
+  }
 }
