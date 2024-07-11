@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:spendsmart/ui/common/app_colors.dart';
-import 'package:spendsmart/ui/common/ui_helpers.dart';
 
 import 'home_viewmodel.dart';
+import 'sub_views/expense/expense_view.dart';
+import 'sub_views/settings/settings_view.dart';
+import 'sub_views/summary/summary_view.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
@@ -16,62 +17,46 @@ class HomeView extends StackedView<HomeViewModel> {
   ) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                verticalSpaceLarge,
-                Column(
-                  children: [
-                    const Text(
-                      'Hello, STACKED!',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    verticalSpaceMedium,
-                    MaterialButton(
-                      color: Colors.black,
-                      onPressed: viewModel.incrementCounter,
-                      child: Text(
-                        viewModel.counterLabel,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MaterialButton(
-                      color: kcDarkGreyColor,
-                      onPressed: viewModel.showDialog,
-                      child: const Text(
-                        'Show Dialog',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    MaterialButton(
-                      color: kcDarkGreyColor,
-                      onPressed: viewModel.showBottomSheet,
-                      child: const Text(
-                        'Show Bottom Sheet',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+        child: Stack(
+          children: [
+            IndexedStack(
+              index: viewModel.currentIndex,
+              children: const [
+                ExpenseView(),
+                SummaryView(),
+                SettingsView(),
               ],
+            )
+          ],
+        ),
+      ),
+      extendBody: true,
+      bottomNavigationBar: ClipRRect(
+        child: BottomNavigationBar(
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: viewModel.currentIndex,
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+          onTap: (value) async {
+            viewModel.setIndex(value);
+          },
+          selectedFontSize: 16,
+          unselectedFontSize: 16,
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Expenses',
+              icon: Icon(Icons.local_offer_outlined),
             ),
-          ),
+            BottomNavigationBarItem(
+              label: 'Summary',
+              icon: Icon(Icons.search_outlined),
+            ),
+            BottomNavigationBarItem(
+              label: 'Settings',
+              icon: Icon(Icons.settings_outlined),
+            ),
+          ],
         ),
       ),
     );
