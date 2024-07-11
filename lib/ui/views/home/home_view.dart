@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../expense_navigator/expense_navigator_view.dart';
+import '../settings/settings_view.dart';
+import '../summary/summary_view.dart';
 import 'home_viewmodel.dart';
-import 'sub_views/expense/expense_view.dart';
-import 'sub_views/settings/settings_view.dart';
-import 'sub_views/summary/summary_view.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
@@ -21,16 +21,18 @@ class HomeView extends StackedView<HomeViewModel> {
           children: [
             IndexedStack(
               index: viewModel.currentIndex,
-              children: const [
-                ExpenseView(),
-                SummaryView(),
-                SettingsView(),
+              children: [
+                ExpenseNavigatorView(
+                  navigatorKey: viewModel.expenseViewNavigationKey,
+                ),
+                const SummaryView(),
+                const SettingsView(),
               ],
             )
           ],
         ),
       ),
-      extendBody: true,
+      extendBody: false,
       bottomNavigationBar: ClipRRect(
         child: BottomNavigationBar(
           elevation: 0,

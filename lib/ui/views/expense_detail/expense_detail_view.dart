@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import 'expense_viewmodel.dart';
+import 'expense_detail_viewmodel.dart';
 
-class ExpenseView extends StackedView<ExpenseViewModel> {
-  const ExpenseView({Key? key}) : super(key: key);
+class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
+  const ExpenseDetailView({Key? key}) : super(key: key);
 
   @override
   Widget builder(
     BuildContext context,
-    ExpenseViewModel viewModel,
+    ExpenseDetailViewModel viewModel,
     Widget? child,
   ) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-        child: const Text("Expense view"),
+        child: const Center(child: Text("Detail")),
       ),
     );
   }
 
   @override
-  ExpenseViewModel viewModelBuilder(
+  ExpenseDetailViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      ExpenseViewModel();
+      ExpenseDetailViewModel();
 }
