@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
 import 'package:spendsmart/models/app/language_model.dart';
 import 'package:spendsmart/ui/common/ui_helpers.dart';
@@ -29,14 +30,14 @@ class LanguageView extends StackedView<LanguageViewModel> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Select Language",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.selectLanguage,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -57,14 +58,14 @@ class LanguageView extends StackedView<LanguageViewModel> {
                         viewModel.setSelectedLanguage(value);
                       }),
                       const SizedBox(height: 20),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Select Currency",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.selectCurrency,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -106,7 +107,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text("Continue"),
+                child: Text(AppLocalizations.of(context)!.saveAndContinue),
               ),
             ],
           ),

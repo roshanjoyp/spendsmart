@@ -1,3 +1,6 @@
 {
-    "langugaeView":"Spanish"
+    "loading":"Loading S",
+    "selectLanguage":"Select Language S",
+    "selectCurrency":"Select Currency S",
+    "saveAndContinue":"Save and Continue S"
 }

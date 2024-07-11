@@ -67,11 +67,14 @@ class LocalStorageService with ListenableServiceMixin {
     _userSettingsDataBox =
         await _appDB.openBox<dynamic>(userSettingsDataBoxString);
 
+    //await _userSettingsDataBox.clear();
+
     Map<String, dynamic> data = Map.from(
         (await _userSettingsDataBox.get("localUserSettingsData")) ?? {});
 
     try {
-      _userSettingsData = data == {} ? null : UserSettingsModel.fromJson(data);
+      _userSettingsData =
+          data.isEmpty ? null : UserSettingsModel.fromJson(data);
     } on TypeError {
       logger.i("Type Error");
     } catch (e) {
