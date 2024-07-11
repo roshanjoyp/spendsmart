@@ -11,4 +11,8 @@ class ExpenseService {
   }
 
   List<ExpenseDataModel> get getAllExpenses => _localStorageService.expenses;
+
+  Future<void> deleteExpenseData(ExpenseDataModel expenseDataModel) async {
+    await _localStorageService.deleteExpenseData(expenseDataModel.id);
+  }
 }

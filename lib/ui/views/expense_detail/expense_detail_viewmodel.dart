@@ -42,27 +42,38 @@ class ExpenseDetailViewModel extends BaseViewModel {
 
   bool get isNewEntry => _expenseDataModel == null ? true : false;
 
-  Future<void> addNewExpense() async {
-    if (amount == null) {
-      _amountInputValidationMessage = "Enter an amount";
-      rebuildUi();
-      return;
+  Future<bool> addNewExpense() async {
+    if (!validate()) {
+      return false;
     }
-    if (selectedType == null) {
-      _categoryInputValidationMessage = "Enter atleast one category";
-      rebuildUi();
-      return;
-    }
+    _expenseDataModel = constructModel();
 
-    _expenseDataModel = ExpenseDataModel(
+    await _expenseService.saveExpenseData(_expenseDataModel!);
+    return true;
+  }
+
+  ExpenseDataModel constructModel() {
+    return ExpenseDataModel(
       id: DateTime.now().toIso8601String(),
       amount: amount!.toDouble(),
       date: _expenseDate,
       type: selectedType!,
       description: _descriptionController.text.trim(),
     );
+  }
 
-    await _expenseService.saveExpenseData(_expenseDataModel!);
+  bool validate() {
+    if (amount == null) {
+      _amountInputValidationMessage = "Enter an amount";
+      rebuildUi();
+      return false;
+    }
+    if (selectedType == null) {
+      _categoryInputValidationMessage = "Enter atleast one category";
+      rebuildUi();
+      return false;
+    }
+    return true;
   }
 
   amountChanged(String value) {
@@ -155,7 +166,23 @@ class ExpenseDetailViewModel extends BaseViewModel {
   final TextEditingController _descriptionController = TextEditingController();
   TextEditingController get descriptionController => _descriptionController;
 
-  void updateExpense() {}
+  Future<bool> updateExpense() async {
+    if (!validate()) {
+      return false;
+    }
+    var model = constructModel();
+    model = model.copyWith(id: _expenseDataModel!.id);
 
-  void deleteExpense() {}
+    if (model == _expenseDataModel) {
+      return false;
+    } else {
+      await _expenseService.saveExpenseData(model);
+      return true;
+    }
+  }
+
+  Future<bool> deleteExpense() async {
+    await _expenseService.deleteExpenseData(_expenseDataModel!);
+    return true;
+  }
 }

@@ -119,7 +119,14 @@ class LocalStorageService with ListenableServiceMixin {
   saveExpenseData(ExpenseDataModel expenseDataModel) async {
     try {
       await _expenseDataBox.put(expenseDataModel.id, expenseDataModel.toJson());
-      _expenses.add(expenseDataModel);
+      int index =
+          _expenses.indexWhere((element) => element.id == expenseDataModel.id);
+      if (index == -1) {
+        _expenses.add(expenseDataModel);
+      } else {
+        _expenses[index] = expenseDataModel;
+      }
+
       notifyListeners();
     } catch (e) {
       print(e);
@@ -131,6 +138,12 @@ class LocalStorageService with ListenableServiceMixin {
     await _expenseDataBox.clear();
     _userSettingsData = null;
     _expenses.clear();
+    notifyListeners();
+  }
+
+  Future<void> deleteExpenseData(String id) async {
+    await _expenseDataBox.delete(id);
+    _expenses.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }

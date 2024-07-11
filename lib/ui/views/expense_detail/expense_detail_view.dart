@@ -42,8 +42,10 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                       width: double.infinity,
                       text: "Add new expense",
                       onTap: () async {
-                        await viewModel.addNewExpense();
-                        Navigator.of(context).pop();
+                        bool result = await viewModel.addNewExpense();
+                        if (result) {
+                          Navigator.of(context).pop();
+                        }
                       },
                       isLoading: viewModel.isBusy,
                       backgroundColor: Colors.deepPurple,
@@ -57,7 +59,12 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                   child: CustomElevatedButton(
                       width: double.infinity,
                       text: "Update expense",
-                      onTap: viewModel.updateExpense,
+                      onTap: () async {
+                        bool result = await viewModel.updateExpense();
+                        if (result) {
+                          Navigator.of(context).pop();
+                        }
+                      },
                       isLoading: viewModel.isBusy,
                       backgroundColor: Colors.deepPurple,
                       textColor: Colors.white),
@@ -70,7 +77,12 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                   child: CustomElevatedButton(
                       width: double.infinity,
                       text: "Delete expense",
-                      onTap: viewModel.deleteExpense,
+                      onTap: () async {
+                        bool result = await viewModel.deleteExpense();
+                        if (result) {
+                          Navigator.of(context).pop();
+                        }
+                      },
                       isLoading: viewModel.isBusy,
                       backgroundColor: Colors.red,
                       textColor: Colors.white),

@@ -51,12 +51,14 @@ class ExpenseViewModel extends BaseViewModel {
 
   void addNewExpense() async {
     await _navigatorKey.currentState!.pushNamed("/expense-detail-view");
+    initialize();
     rebuildUi();
   }
 
   Future<void> editExpense(ExpenseDataModel expense) async {
     await _navigatorKey.currentState!
         .pushNamed("/expense-detail-view", arguments: [expense]);
+    initialize();
     rebuildUi();
   }
 }
