@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
 import 'package:spendsmart/models/app/language_model.dart';
 import 'package:spendsmart/ui/common/ui_helpers.dart';
+import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
 import 'language_viewmodel.dart';
@@ -92,22 +93,15 @@ class LanguageView extends StackedView<LanguageViewModel> {
                 ),
               ),
               const Spacer(),
-              ElevatedButton(
-                onPressed: () {
+              CustomElevatedButton(
+                width: MediaQuery.of(context).size.width,
+                text: AppLocalizations.of(context)!.saveAndContinue,
+                onTap: () {
                   viewModel.saveAndContinue();
                 },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: Text(AppLocalizations.of(context)!.saveAndContinue),
+                isLoading: viewModel.isBusy,
+                backgroundColor: Colors.blue,
+                textColor: Colors.white,
               ),
             ],
           ),
