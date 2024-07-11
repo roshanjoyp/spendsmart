@@ -757,6 +757,26 @@ class MockLocalStorageService extends _i1.Mock
       ) as _i6.Future<void>);
 
   @override
+  dynamic saveExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #saveExpenseData,
+          [expenseDataModel],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i6.Future<void> deleteAllData() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteAllData,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
   void listenToReactiveValues(List<dynamic>? reactiveValues) =>
       super.noSuchMethod(
         Invocation.method(
@@ -797,7 +817,25 @@ class MockLocalStorageService extends _i1.Mock
 /// A class which mocks [ExpenseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {}
+class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
+  @override
+  List<_i9.ExpenseDataModel> get getAllExpenses => (super.noSuchMethod(
+        Invocation.getter(#getAllExpenses),
+        returnValue: <_i9.ExpenseDataModel>[],
+        returnValueForMissingStub: <_i9.ExpenseDataModel>[],
+      ) as List<_i9.ExpenseDataModel>);
+
+  @override
+  _i6.Future<void> saveExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveExpenseData,
+          [expenseDataModel],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+}
 
 /// A class which mocks [UserSettingsService].
 ///
@@ -836,6 +874,16 @@ class MockUserSettingsService extends _i1.Mock
   _i6.Future<void> saveUserSettingsData() => (super.noSuchMethod(
         Invocation.method(
           #saveUserSettingsData,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> deleteAllData() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteAllData,
           [],
         ),
         returnValue: _i6.Future<void>.value(),

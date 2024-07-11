@@ -41,8 +41,7 @@ class LocalStorageService with ListenableServiceMixin {
     WidgetsFlutterBinding.ensureInitialized();
     if (kIsWeb) {
       await Hive.initFlutter();
-      Hive.registerAdapter(UserSettingsModelAdapter());
-      Hive.registerAdapter(ExpenseDataModelAdapter());
+
       _appDB = await BoxCollection.open(
         userCollectionString, // Name of your database
         {
@@ -55,8 +54,7 @@ class LocalStorageService with ListenableServiceMixin {
       await _directory.create(recursive: true);
       var dbPath = '${_directory.path}/spendSmartDB';
       await Hive.initFlutter(dbPath);
-      Hive.registerAdapter(UserSettingsModelAdapter());
-      Hive.registerAdapter(ExpenseDataModelAdapter());
+
       _appDB = await BoxCollection.open(
         userCollectionString, // Name of your database
         {
@@ -77,8 +75,7 @@ class LocalStorageService with ListenableServiceMixin {
         (await _userSettingsDataBox.get("localUserSettingsData")) ?? {});
 
     try {
-      _userSettingsData =
-          data.isEmpty ? null : UserSettingsModel.fromJson(data);
+      _userSettingsData = data.isEmpty ? null : UserSettingsModel.fromMap(data);
     } on TypeError {
       logger.i("Type Error");
     } catch (e) {
@@ -87,6 +84,7 @@ class LocalStorageService with ListenableServiceMixin {
 
     if (_userSettingsData != null) {
       Map<String, dynamic> items = (await _expenseDataBox.getAllValues());
+
       items.forEach((key, value) {
         _expenses.add(ExpenseDataModel.fromJson(value));
       });
@@ -114,7 +112,7 @@ class LocalStorageService with ListenableServiceMixin {
   Future<void> saveUserSettingsData() async {
     if (_userSettingsData != null) {
       await _userSettingsDataBox.put(
-          "localUserSettingsData", _userSettingsData!.toJson());
+          "localUserSettingsData", _userSettingsData!.toMap());
     }
   }
 
@@ -126,5 +124,13 @@ class LocalStorageService with ListenableServiceMixin {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> deleteAllData() async {
+    await _userSettingsDataBox.clear();
+    await _expenseDataBox.clear();
+    _userSettingsData = null;
+    _expenses.clear();
+    notifyListeners();
   }
 }

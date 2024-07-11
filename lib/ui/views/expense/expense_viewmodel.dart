@@ -10,17 +10,53 @@ class ExpenseViewModel extends BaseViewModel {
 
   ExpenseViewModel(this._navigatorKey);
 
-  List<ExpenseDataModel> get allExpenses => _expenseService.getAllExpenses;
+  List<ExpenseDataModel> _allExpenses = [];
+  List<ExpenseDataModel> _filteredExpenses = [];
+
+  List<ExpenseDataModel> get allExpenses => _filteredExpenses;
+
+  void initialize() {
+    _allExpenses = _expenseService.getAllExpenses;
+    _filteredExpenses = List.from(_allExpenses);
+    sortExpensesByDate();
+    notifyListeners();
+  }
+
+  DateTime get firstDate => _allExpenses.isEmpty
+      ? DateTime.now()
+      : _allExpenses.reduce((a, b) => a.date.isBefore(b.date) ? a : b).date;
+
+  DateTime get lastDate => _allExpenses.isEmpty
+      ? DateTime.now()
+      : _allExpenses.reduce((a, b) => a.date.isAfter(b.date) ? a : b).date;
+
+  void sortExpensesByDate() {
+    _filteredExpenses.sort((a, b) => b.date.compareTo(a.date));
+    notifyListeners();
+  }
+
+  void filterExpensesByDate(DateTime startDate, DateTime endDate) {
+    _filteredExpenses = _allExpenses.where((expense) {
+      return expense.date.isAfter(startDate) && expense.date.isBefore(endDate);
+    }).toList();
+    sortExpensesByDate(); // Ensure the filtered list is also sorted
+    notifyListeners();
+  }
+
+  void clearFilters() {
+    _filteredExpenses = List.from(_allExpenses);
+    sortExpensesByDate();
+    notifyListeners();
+  }
+
   void addNewExpense() async {
     await _navigatorKey.currentState!.pushNamed("/expense-detail-view");
     rebuildUi();
   }
 
-  // // Used as temporary fix to avoid called setstate during build
-  // @override
-  // void notifyListeners() {
-  //   Future.microtask(() {
-  //     super.notifyListeners();
-  //   });
-  // }
+  Future<void> editExpense(ExpenseDataModel expense) async {
+    await _navigatorKey.currentState!
+        .pushNamed("/expense-detail-view", arguments: [expense]);
+    rebuildUi();
+  }
 }

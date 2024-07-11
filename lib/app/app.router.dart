@@ -8,6 +8,7 @@
 import 'package:flutter/foundation.dart' as _i11;
 import 'package:flutter/material.dart' as _i10;
 import 'package:flutter/material.dart';
+import 'package:spendsmart/models/local/expense_data_model.dart' as _i12;
 import 'package:spendsmart/ui/views/expense/expense_view.dart' as _i5;
 import 'package:spendsmart/ui/views/expense_detail/expense_detail_view.dart'
     as _i8;
@@ -19,7 +20,7 @@ import 'package:spendsmart/ui/views/settings/settings_view.dart' as _i7;
 import 'package:spendsmart/ui/views/startup/startup_view.dart' as _i3;
 import 'package:spendsmart/ui/views/summary/summary_view.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i12;
+import 'package:stacked_services/stacked_services.dart' as _i13;
 
 class Routes {
   static const homeView = '/home-view';
@@ -126,8 +127,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i8.ExpenseDetailView: (data) {
+      final args = data.getArgs<ExpenseDetailViewArguments>(nullOk: false);
       return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i8.ExpenseDetailView(),
+        builder: (context) =>
+            _i8.ExpenseDetailView(args.expenseDataModel, key: args.key),
         settings: data,
       );
     },
@@ -175,6 +178,33 @@ class ExpenseViewArguments {
   }
 }
 
+class ExpenseDetailViewArguments {
+  const ExpenseDetailViewArguments({
+    required this.expenseDataModel,
+    this.key,
+  });
+
+  final _i12.ExpenseDataModel? expenseDataModel;
+
+  final _i11.Key? key;
+
+  @override
+  String toString() {
+    return '{"expenseDataModel": "$expenseDataModel", "key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ExpenseDetailViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.expenseDataModel == expenseDataModel && other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return expenseDataModel.hashCode ^ key.hashCode;
+  }
+}
+
 class ExpenseNavigatorViewArguments {
   const ExpenseNavigatorViewArguments({
     this.key,
@@ -202,7 +232,7 @@ class ExpenseNavigatorViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i12.NavigationService {
+extension NavigatorStateExtension on _i13.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -290,14 +320,18 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToExpenseDetailView([
+  Future<dynamic> navigateToExpenseDetailView({
+    required _i12.ExpenseDataModel? expenseDataModel,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.expenseDetailView,
+        arguments: ExpenseDetailViewArguments(
+            expenseDataModel: expenseDataModel, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -409,14 +443,18 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithExpenseDetailView([
+  Future<dynamic> replaceWithExpenseDetailView({
+    required _i12.ExpenseDataModel? expenseDataModel,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.expenseDetailView,
+        arguments: ExpenseDetailViewArguments(
+            expenseDataModel: expenseDataModel, key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

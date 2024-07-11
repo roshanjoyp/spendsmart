@@ -18,24 +18,20 @@ class CategoryComponent extends StatelessWidget {
           //Selected Categories
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: viewModel.selectedCategories.isEmpty
-                ? const Text("No categories selected")
-                : Wrap(
-                    children: viewModel.selectedCategories
-                        .map((category) => Container(
-                              margin: const EdgeInsets.symmetric(vertical: 8),
-                              decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(.5),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: ListTile(
-                                title: Text(category),
-                                trailing: IconButton(
-                                    onPressed: () =>
-                                        viewModel.removeCategory(category),
-                                    icon: const Icon(Icons.close)),
-                              ),
-                            ))
-                        .toList(),
+            child: viewModel.selectedType == null
+                ? const Text("No category selected")
+                : Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(.5),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text(viewModel.selectedType!),
+                      trailing: IconButton(
+                          onPressed: () =>
+                              viewModel.removeCategory(viewModel.selectedType!),
+                          icon: const Icon(Icons.close)),
+                    ),
                   ),
           ),
           TextField(

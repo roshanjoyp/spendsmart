@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,7 +10,11 @@ import 'components/description_component.dart';
 import 'expense_detail_viewmodel.dart';
 
 class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
-  const ExpenseDetailView({Key? key}) : super(key: key);
+  final ExpenseDataModel? _expenseDataModel;
+  const ExpenseDetailView(
+    this._expenseDataModel, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget builder(
@@ -81,5 +86,5 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
   ExpenseDetailViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      ExpenseDetailViewModel();
+      ExpenseDetailViewModel(expenseDataModel: _expenseDataModel);
 }

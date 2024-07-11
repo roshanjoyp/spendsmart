@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/ui/common/widgets/custom_page_route.dart';
 import 'package:spendsmart/ui/views/expense/expense_view.dart';
 import 'package:spendsmart/ui/views/expense_detail/expense_detail_view.dart';
@@ -31,13 +32,22 @@ class ExpenseNavigatorView extends StackedView<ExpenseNavigatorViewModel> {
             },
           );
         } else if (settings.name == "/expense-detail-view") {
-          // var data = settings.arguments as List<Object>;
-
-          return MyRoute(
-            builder: (context) {
-              return const ExpenseDetailView();
-            },
-          );
+          var data = settings.arguments;
+          if (data != null) {
+            var items = data as List;
+            var expense = items[0] as ExpenseDataModel;
+            return MyRoute(
+              builder: (context) {
+                return ExpenseDetailView(expense);
+              },
+            );
+          } else {
+            return MyRoute(
+              builder: (context) {
+                return const ExpenseDetailView(null);
+              },
+            );
+          }
         } else {
           return MyRoute(
             builder: (context) {

@@ -29,7 +29,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       amount = _expenseDataModel!.amount;
       _amountController.text = amount.toString();
       _expenseDate = _expenseDataModel!.date;
-      _selectedCategories = _expenseDataModel!.type!.toSet();
+      _selectedType = _expenseDataModel!.type;
       _descriptionController.text = _expenseDataModel!.description ?? "";
     }
   }
@@ -48,7 +48,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       rebuildUi();
       return;
     }
-    if (selectedCategories.isEmpty) {
+    if (selectedType == null) {
       _categoryInputValidationMessage = "Enter atleast one category";
       rebuildUi();
       return;
@@ -58,7 +58,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       id: DateTime.now().toIso8601String(),
       amount: amount!.toDouble(),
       date: _expenseDate,
-      type: selectedCategories.toList(),
+      type: selectedType!,
       description: _descriptionController.text.trim(),
     );
 
@@ -99,20 +99,20 @@ class ExpenseDetailViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  Set<String> _selectedCategories = {};
+  String? _selectedType;
   final List<String> _recommendedCategories = [];
   Set<String> _allCategories = {};
   final TextEditingController _categoryController = TextEditingController();
 
   List<String> get recommendedCategories => _recommendedCategories;
-  Set<String> get selectedCategories => _selectedCategories;
+  String? get selectedType => _selectedType;
   Set<String> get allCategories => _allCategories;
   String? _categoryInputValidationMessage;
   TextEditingController get categoryController => _categoryController;
   String? get categoryInputValidationMessage => _categoryInputValidationMessage;
 
   removeCategory(String category) {
-    _selectedCategories.remove(category);
+    _selectedType = null;
     rebuildUi();
   }
 
@@ -123,7 +123,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
   }
 
   addCategory(String category) {
-    _selectedCategories.add(category);
+    _selectedType = category;
     _categoryController.clear();
     _recommendedCategories.clear();
     _categoryInputValidationMessage = null;
@@ -132,7 +132,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
 
   addCategoryFromText() {
     if (_categoryController.text.isNotEmpty) {
-      _selectedCategories.add(_categoryController.text.trim());
+      _selectedType = _categoryController.text.trim();
 
       _categoryController.clear();
       _recommendedCategories.clear();

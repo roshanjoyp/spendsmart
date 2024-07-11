@@ -33,4 +33,8 @@ class UserSettingsService with ListenableServiceMixin {
   Future<void> saveUserSettingsData() async {
     await _localStorageService.saveUserSettingsData();
   }
+
+  Future<void> deleteAllData() async {
+    await _localStorageService.deleteAllData();
+  }
 }

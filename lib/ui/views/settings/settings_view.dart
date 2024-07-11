@@ -13,9 +13,34 @@ class SettingsView extends StackedView<SettingsViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Container(
-        padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: ListView(
+        children: [
+          GestureDetector(
+              onTap: () => viewModel.deleteAllData(),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  title: Text("Delete All Data"),
+                  leading: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                ),
+              )),
+          GestureDetector(
+              onTap: () => viewModel.generatemockData(),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  title: Text("Generate mock data"),
+                  leading: Icon(
+                    Icons.generating_tokens,
+                    color: Colors.green,
+                  ),
+                ),
+              ))
+        ],
       ),
     );
   }
