@@ -2,7 +2,7 @@ import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/app/app.router.dart';
 import 'package:spendsmart/constants/app_defaults.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
-import 'package:spendsmart/models/local/user_settings_model.dart';
+import 'package:spendsmart/models/app/language_model.dart';
 import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -14,25 +14,31 @@ class LanguageViewModel extends BaseViewModel {
   bool _isLanguageSheetExpanded = false;
   bool _isCurrencySheetExpanded = false;
 
-  String? _selectedLanguage;
-  String? _selectedCurrency;
+  late int _selectedLanguageIndex;
+  late int _selectedCurrencyIndex;
 
   bool get isLanguageSheetExpanded => _isLanguageSheetExpanded;
-
   bool get isCurrencySheetExpanded => _isCurrencySheetExpanded;
 
-  String get selectedCurrencyValue => _selectedCurrency ?? 'USD';
-  String get selectedLanguageValue => _selectedLanguage ?? 'English';
+  String get selectedCurrencyValue =>
+      currencies[_selectedCurrencyIndex].currency;
+  String get selectedLanguageValue =>
+      languages[_selectedLanguageIndex].language;
 
-  String get selectedCurrencySymbol {
-    var item =
-        currencies.firstWhere((item) => item.currency == selectedCurrencyValue);
-    return item.currencySymbol;
-  }
+  String get selectedCurrencySymbol =>
+      currencies[_selectedCurrencyIndex].currencySymbol;
+  String get selectedLanguageCode =>
+      languages[_selectedLanguageIndex].languageCountryCode;
 
   LanguageViewModel() {
-    _userSettingService.updateUserSettings(UserSettingsModel(
-        id: "id", language: appDefaultLanguage, currency: appDefaultCurrency));
+    _selectedLanguageIndex =
+        languages.indexWhere((item) => item.language == appDefaultLanguage);
+
+    _selectedCurrencyIndex =
+        currencies.indexWhere((item) => item.currency == appDefaultCurrency);
+
+    _userSettingService.updateUserSettings(
+        currency: selectedCurrencySymbol, language: selectedLanguageCode);
   }
 
   void expandLanguageSheetTapped() {
@@ -45,20 +51,22 @@ class LanguageViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  void setSelectedLanguage(String language) {
-    _selectedLanguage = language;
+  void setSelectedLanguage(int index) {
+    _selectedLanguageIndex = index;
     _isLanguageSheetExpanded = false;
     rebuildUi();
   }
 
-  void setSelectedCurrency(String currency) {
-    _selectedCurrency = currency;
+  void setSelectedCurrency(int index) {
+    _selectedCurrencyIndex = index;
     _isCurrencySheetExpanded = false;
     rebuildUi();
   }
 
   void saveAndContinue() async {
-    _userSettingService.saveUserSettingsData();
+    setBusy(true);
+    await _userSettingService.saveUserSettingsData();
+    setBusy(false);
     _navigationService.replaceWithHomeView();
   }
 }

@@ -53,7 +53,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                               .toList(),
                           icon: Icons.language,
                           selectedValue: viewModel.selectedLanguageValue,
-                          onSelected: (String value) {
+                          onSelected: (int value) {
                         viewModel.setSelectedLanguage(value);
                       }),
                       const SizedBox(height: 20),
@@ -83,7 +83,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                           currency: viewModel.selectedCurrencySymbol,
                           currencies: currencies
                               .map((e) => e.currencySymbol)
-                              .toList(), onSelected: (String value) {
+                              .toList(), onSelected: (int value) {
                         viewModel.setSelectedCurrency(value);
                       }),
                     ],
@@ -124,7 +124,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
     required List<String> list,
     required String selectedValue,
     required IconData icon,
-    required Function(String) onSelected,
+    required Function(int) onSelected,
     bool isCurrency = false,
     String? currency,
     List<String>? currencies,
@@ -195,7 +195,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                             )
                           : null;
                       return GestureDetector(
-                        onTap: () => onSelected(list[index]),
+                        onTap: () => onSelected(index),
                         child: Container(
                           height: 50,
                           width: double.infinity,

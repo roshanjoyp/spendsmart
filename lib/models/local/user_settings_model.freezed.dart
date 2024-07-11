@@ -20,12 +20,10 @@ UserSettingsModel _$UserSettingsModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserSettingsModel {
-  @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
   @HiveField(1)
-  String get language => throw _privateConstructorUsedError;
+  String? get language => throw _privateConstructorUsedError;
   @HiveField(2)
-  String get currency => throw _privateConstructorUsedError;
+  String? get currency => throw _privateConstructorUsedError;
   @HiveField(3)
   bool? get pushNotificationsEnabled => throw _privateConstructorUsedError;
   @HiveField(4)
@@ -44,9 +42,8 @@ abstract class $UserSettingsModelCopyWith<$Res> {
       _$UserSettingsModelCopyWithImpl<$Res, UserSettingsModel>;
   @useResult
   $Res call(
-      {@HiveField(0) String id,
-      @HiveField(1) String language,
-      @HiveField(2) String currency,
+      {@HiveField(1) String? language,
+      @HiveField(2) String? currency,
       @HiveField(3) bool? pushNotificationsEnabled,
       @HiveField(4) DateTime? pushNotificationTime});
 }
@@ -64,25 +61,20 @@ class _$UserSettingsModelCopyWithImpl<$Res, $Val extends UserSettingsModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? language = null,
-    Object? currency = null,
+    Object? language = freezed,
+    Object? currency = freezed,
     Object? pushNotificationsEnabled = freezed,
     Object? pushNotificationTime = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      currency: null == currency
+              as String?,
+      currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       pushNotificationsEnabled: freezed == pushNotificationsEnabled
           ? _value.pushNotificationsEnabled
           : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
@@ -104,9 +96,8 @@ abstract class _$$UserSettingsModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@HiveField(0) String id,
-      @HiveField(1) String language,
-      @HiveField(2) String currency,
+      {@HiveField(1) String? language,
+      @HiveField(2) String? currency,
       @HiveField(3) bool? pushNotificationsEnabled,
       @HiveField(4) DateTime? pushNotificationTime});
 }
@@ -122,25 +113,20 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? language = null,
-    Object? currency = null,
+    Object? language = freezed,
+    Object? currency = freezed,
     Object? pushNotificationsEnabled = freezed,
     Object? pushNotificationTime = freezed,
   }) {
     return _then(_$UserSettingsModelImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      currency: null == currency
+              as String?,
+      currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       pushNotificationsEnabled: freezed == pushNotificationsEnabled
           ? _value.pushNotificationsEnabled
           : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
@@ -158,9 +144,8 @@ class __$$UserSettingsModelImplCopyWithImpl<$Res>
 @HiveType(typeId: 1, adapterName: "UserSettingsModelAdapter")
 class _$UserSettingsModelImpl implements _UserSettingsModel {
   _$UserSettingsModelImpl(
-      {@HiveField(0) required this.id,
-      @HiveField(1) required this.language,
-      @HiveField(2) required this.currency,
+      {@HiveField(1) this.language,
+      @HiveField(2) this.currency,
       @HiveField(3) this.pushNotificationsEnabled,
       @HiveField(4) this.pushNotificationTime});
 
@@ -168,14 +153,11 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
       _$$UserSettingsModelImplFromJson(json);
 
   @override
-  @HiveField(0)
-  final String id;
-  @override
   @HiveField(1)
-  final String language;
+  final String? language;
   @override
   @HiveField(2)
-  final String currency;
+  final String? currency;
   @override
   @HiveField(3)
   final bool? pushNotificationsEnabled;
@@ -185,7 +167,7 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
 
   @override
   String toString() {
-    return 'UserSettingsModel(id: $id, language: $language, currency: $currency, pushNotificationsEnabled: $pushNotificationsEnabled, pushNotificationTime: $pushNotificationTime)';
+    return 'UserSettingsModel(language: $language, currency: $currency, pushNotificationsEnabled: $pushNotificationsEnabled, pushNotificationTime: $pushNotificationTime)';
   }
 
   @override
@@ -193,7 +175,6 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserSettingsModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.language, language) ||
                 other.language == language) &&
             (identical(other.currency, currency) ||
@@ -207,7 +188,7 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, language, currency,
+  int get hashCode => Object.hash(runtimeType, language, currency,
       pushNotificationsEnabled, pushNotificationTime);
 
   @JsonKey(ignore: true)
@@ -227,9 +208,8 @@ class _$UserSettingsModelImpl implements _UserSettingsModel {
 
 abstract class _UserSettingsModel implements UserSettingsModel {
   factory _UserSettingsModel(
-          {@HiveField(0) required final String id,
-          @HiveField(1) required final String language,
-          @HiveField(2) required final String currency,
+          {@HiveField(1) final String? language,
+          @HiveField(2) final String? currency,
           @HiveField(3) final bool? pushNotificationsEnabled,
           @HiveField(4) final DateTime? pushNotificationTime}) =
       _$UserSettingsModelImpl;
@@ -238,14 +218,11 @@ abstract class _UserSettingsModel implements UserSettingsModel {
       _$UserSettingsModelImpl.fromJson;
 
   @override
-  @HiveField(0)
-  String get id;
-  @override
   @HiveField(1)
-  String get language;
+  String? get language;
   @override
   @HiveField(2)
-  String get currency;
+  String? get currency;
   @override
   @HiveField(3)
   bool? get pushNotificationsEnabled;

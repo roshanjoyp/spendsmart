@@ -1,3 +1,6 @@
 {
-    "langugaeView":"Language View"
+    "langugaeView":"Language View",
+    "selectLanguage":"Select Language",
+    "selectCurrency":"Select Currency",
+    "saveAndContinue":"Save and Continue"
 }

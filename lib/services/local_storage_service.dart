@@ -90,12 +90,23 @@ class LocalStorageService with ListenableServiceMixin {
     _initializationCompleter.complete();
   }
 
-  void setUserSettingsData(UserSettingsModel data) async {
-    _userSettingsData = data;
+  void setUserSettingsData({
+    String? language,
+    String? currency,
+    bool? pushNotificationsEnabled,
+    DateTime? pushNotificationTime,
+  }) async {
+    _userSettingsData = UserSettingsModel(
+        language: language ?? _userSettingsData?.language,
+        currency: currency ?? _userSettingsData?.currency,
+        pushNotificationsEnabled: pushNotificationsEnabled ??
+            _userSettingsData?.pushNotificationsEnabled,
+        pushNotificationTime:
+            pushNotificationTime ?? _userSettingsData?.pushNotificationTime);
     notifyListeners();
   }
 
-  void saveUserSettingsData() async {
+  Future<void> saveUserSettingsData() async {
     if (_userSettingsData != null) {
       await _userSettingsDataBox.put(
           "localUserSettingsData", _userSettingsData!.toJson());

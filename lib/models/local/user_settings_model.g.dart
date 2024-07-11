@@ -17,9 +17,8 @@ class UserSettingsModelAdapter extends TypeAdapter<_$UserSettingsModelImpl> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return _$UserSettingsModelImpl(
-      id: fields[0] as String,
-      language: fields[1] as String,
-      currency: fields[2] as String,
+      language: fields[1] as String?,
+      currency: fields[2] as String?,
       pushNotificationsEnabled: fields[3] as bool?,
       pushNotificationTime: fields[4] as DateTime?,
     );
@@ -28,9 +27,7 @@ class UserSettingsModelAdapter extends TypeAdapter<_$UserSettingsModelImpl> {
   @override
   void write(BinaryWriter writer, _$UserSettingsModelImpl obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.language)
       ..writeByte(2)
@@ -59,9 +56,8 @@ class UserSettingsModelAdapter extends TypeAdapter<_$UserSettingsModelImpl> {
 _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
         Map<String, dynamic> json) =>
     _$UserSettingsModelImpl(
-      id: json['id'] as String,
-      language: json['language'] as String,
-      currency: json['currency'] as String,
+      language: json['language'] as String?,
+      currency: json['currency'] as String?,
       pushNotificationsEnabled: json['pushNotificationsEnabled'] as bool?,
       pushNotificationTime: json['pushNotificationTime'] == null
           ? null
@@ -71,7 +67,6 @@ _$UserSettingsModelImpl _$$UserSettingsModelImplFromJson(
 Map<String, dynamic> _$$UserSettingsModelImplToJson(
         _$UserSettingsModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'language': instance.language,
       'currency': instance.currency,
       'pushNotificationsEnabled': instance.pushNotificationsEnabled,

@@ -32,8 +32,7 @@ void main() {
           () {
         final userSettingsModelMock = getAndRegisterUserSettingsService();
         when(userSettingsModelMock.userSettingsData).thenReturn(
-            UserSettingsModel(
-                id: "id", language: "language", currency: "currency"));
+            UserSettingsModel(language: "language", currency: "currency"));
 
         final navigationService = getAndRegisterNavigationService();
 

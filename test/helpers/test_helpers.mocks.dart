@@ -726,6 +726,37 @@ class MockLocalStorageService extends _i1.Mock
       ) as int);
 
   @override
+  void setUserSettingsData({
+    String? language,
+    String? currency,
+    bool? pushNotificationsEnabled,
+    DateTime? pushNotificationTime,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setUserSettingsData,
+          [],
+          {
+            #language: language,
+            #currency: currency,
+            #pushNotificationsEnabled: pushNotificationsEnabled,
+            #pushNotificationTime: pushNotificationTime,
+          },
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i6.Future<void> saveUserSettingsData() => (super.noSuchMethod(
+        Invocation.method(
+          #saveUserSettingsData,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
   void listenToReactiveValues(List<dynamic>? reactiveValues) =>
       super.noSuchMethod(
         Invocation.method(
@@ -779,6 +810,37 @@ class MockUserSettingsService extends _i1.Mock
         returnValue: 0,
         returnValueForMissingStub: 0,
       ) as int);
+
+  @override
+  void updateUserSettings({
+    String? language,
+    String? currency,
+    bool? pushNotificationsEnabled,
+    DateTime? pushNotificationTime,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #updateUserSettings,
+          [],
+          {
+            #language: language,
+            #currency: currency,
+            #pushNotificationsEnabled: pushNotificationsEnabled,
+            #pushNotificationTime: pushNotificationTime,
+          },
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i6.Future<void> saveUserSettingsData() => (super.noSuchMethod(
+        Invocation.method(
+          #saveUserSettingsData,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   void listenToReactiveValues(List<dynamic>? reactiveValues) =>

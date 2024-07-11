@@ -8,9 +8,8 @@ part 'user_settings_model.g.dart';
 class UserSettingsModel with _$UserSettingsModel {
   @HiveType(typeId: 1, adapterName: "UserSettingsModelAdapter")
   factory UserSettingsModel({
-    @HiveField(0) required String id,
-    @HiveField(1) required String language,
-    @HiveField(2) required String currency,
+    @HiveField(1) String? language,
+    @HiveField(2) String? currency,
     @HiveField(3) bool? pushNotificationsEnabled,
     @HiveField(4) DateTime? pushNotificationTime,
   }) = _UserSettingsModel;
