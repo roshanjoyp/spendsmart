@@ -12,6 +12,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i4;
 import 'package:spendsmart/models/local/expense_data_model.dart' as _i9;
 import 'package:spendsmart/services/expense_service.dart' as _i10;
+import 'package:spendsmart/services/local_notification_service.dart' as _i12;
 import 'package:spendsmart/services/local_storage_service.dart' as _i8;
 import 'package:spendsmart/services/user_settings_service.dart' as _i11;
 import 'package:stacked_services/stacked_services.dart' as _i3;
@@ -777,6 +778,16 @@ class MockLocalStorageService extends _i1.Mock
       ) as _i6.Future<void>);
 
   @override
+  _i6.Future<void> deleteExpenseData(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteExpenseData,
+          [id],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
   void listenToReactiveValues(List<dynamic>? reactiveValues) =>
       super.noSuchMethod(
         Invocation.method(
@@ -830,6 +841,17 @@ class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
       (super.noSuchMethod(
         Invocation.method(
           #saveExpenseData,
+          [expenseDataModel],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> deleteExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteExpenseData,
           [expenseDataModel],
         ),
         returnValue: _i6.Future<void>.value(),
@@ -927,3 +949,9 @@ class MockUserSettingsService extends _i1.Mock
         returnValueForMissingStub: null,
       );
 }
+
+/// A class which mocks [LocalNotificationService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalNotificationService extends _i1.Mock
+    implements _i12.LocalNotificationService {}

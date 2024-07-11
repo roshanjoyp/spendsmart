@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/app/app.router.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
+import 'package:spendsmart/services/local_notification_service.dart';
 import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -12,6 +14,7 @@ class SettingsViewModel extends BaseViewModel {
   final _userSettingsService = locator<UserSettingsService>();
   final _navigationService = locator<NavigationService>();
   final _expenseService = locator<ExpenseService>();
+  final _notificationService = locator<LocalNotificationService>();
 
   Future<void> deleteAllData() async {
     await _userSettingsService.deleteAllData();
@@ -37,5 +40,19 @@ class SettingsViewModel extends BaseViewModel {
     for (var element in mockExpenses) {
       await _expenseService.saveExpenseData(element);
     }
+  }
+
+  showNotification() async {
+    await _notificationService.cancelAllNotifications();
+    TimeOfDay time = TimeOfDay.now();
+    TimeOfDay newTimeOfDay = TimeOfDay(
+      hour: time.hour,
+      minute: time.minute + 1,
+    );
+    print(newTimeOfDay);
+    //await _notificationService.showANotification();
+    await _notificationService.scheduleDailyNotification(newTimeOfDay);
+
+    //_notificationService.scheduleDailyNotification(time);
   }
 }

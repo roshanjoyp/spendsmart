@@ -7,6 +7,7 @@ import 'package:spendsmart/app/app.dialogs.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/app/app.router.dart';
 import 'package:spendsmart/main_viewmodel.dart';
+import 'package:spendsmart/services/local_notification_service.dart';
 import 'package:spendsmart/services/local_storage_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   await locator<LocalStorageService>().initializationCompleted;
+  await locator<LocalNotificationService>().init();
   setupDialogUi();
   setupBottomSheetUi();
   runApp(const MainApp());

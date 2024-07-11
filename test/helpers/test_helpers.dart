@@ -6,6 +6,7 @@ import 'package:spendsmart/services/local_storage_service.dart';
 import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import 'package:spendsmart/services/local_notification_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -17,6 +18,8 @@ import 'test_helpers.mocks.dart';
   MockSpec<LocalStorageService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<ExpenseService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<UserSettingsService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<LocalNotificationService>(
+      onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -26,6 +29,7 @@ void registerServices() {
   getAndRegisterLocalStorageService();
   getAndRegisterExpenseService();
   getAndRegisterUserSettingsService();
+  getAndRegisterLocalNotificationService();
 // @stacked-mock-register
 }
 
@@ -97,6 +101,13 @@ MockUserSettingsService getAndRegisterUserSettingsService() {
   _removeRegistrationIfExists<UserSettingsService>();
   final service = MockUserSettingsService();
   locator.registerSingleton<UserSettingsService>(service);
+  return service;
+}
+
+MockLocalNotificationService getAndRegisterLocalNotificationService() {
+  _removeRegistrationIfExists<LocalNotificationService>();
+  final service = MockLocalNotificationService();
+  locator.registerSingleton<LocalNotificationService>(service);
   return service;
 }
 // @stacked-mock-create

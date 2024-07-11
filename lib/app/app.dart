@@ -13,6 +13,7 @@ import 'package:spendsmart/ui/views/startup/startup_view.dart';
 import 'package:spendsmart/ui/views/summary/summary_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:spendsmart/services/local_notification_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -35,6 +36,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: LocalStorageService),
     LazySingleton(classType: ExpenseService),
     LazySingleton(classType: UserSettingsService),
+    LazySingleton(classType: LocalNotificationService),
 // @stacked-service
   ],
   bottomsheets: [

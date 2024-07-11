@@ -39,6 +39,18 @@ class SettingsView extends StackedView<SettingsViewModel> {
                     color: Colors.green,
                   ),
                 ),
+              )),
+          GestureDetector(
+              onTap: () => viewModel.showNotification(),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  title: Text("Show Notification"),
+                  leading: Icon(
+                    Icons.notifications,
+                    color: Colors.purple,
+                  ),
+                ),
               ))
         ],
       ),

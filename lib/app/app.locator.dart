@@ -12,6 +12,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/expense_service.dart';
+import '../services/local_notification_service.dart';
 import '../services/local_storage_service.dart';
 import '../services/user_settings_service.dart';
 
@@ -32,4 +33,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => LocalStorageService());
   locator.registerLazySingleton(() => ExpenseService());
   locator.registerLazySingleton(() => UserSettingsService());
+  locator.registerLazySingleton(() => LocalNotificationService());
 }
