@@ -17,7 +17,7 @@ const String expenseDataBoxString = 'expenseDataBox';
 class LocalStorageService with ListenableServiceMixin {
   final logger = getLogger('LocalStorageService');
   UserSettingsModel? _userSettingsData;
-  final List<ExpenseDataModel> _expenses = [];
+  late List<ExpenseDataModel> _expenses;
 
   late BoxCollection _appDB;
   late CollectionBox _userSettingsDataBox;
@@ -32,6 +32,7 @@ class LocalStorageService with ListenableServiceMixin {
   late Directory _directory;
 
   LocalStorageService() {
+    _expenses = [];
     logger.i('LocalStorageService initialization starting');
     _initialise();
   }
@@ -41,6 +42,7 @@ class LocalStorageService with ListenableServiceMixin {
     if (kIsWeb) {
       await Hive.initFlutter();
       Hive.registerAdapter(UserSettingsModelAdapter());
+      Hive.registerAdapter(ExpenseDataModelAdapter());
       _appDB = await BoxCollection.open(
         userCollectionString, // Name of your database
         {
@@ -54,6 +56,7 @@ class LocalStorageService with ListenableServiceMixin {
       var dbPath = '${_directory.path}/spendSmartDB';
       await Hive.initFlutter(dbPath);
       Hive.registerAdapter(UserSettingsModelAdapter());
+      Hive.registerAdapter(ExpenseDataModelAdapter());
       _appDB = await BoxCollection.open(
         userCollectionString, // Name of your database
         {
@@ -66,6 +69,7 @@ class LocalStorageService with ListenableServiceMixin {
 
     _userSettingsDataBox =
         await _appDB.openBox<dynamic>(userSettingsDataBoxString);
+    _expenseDataBox = await _appDB.openBox<dynamic>(expenseDataBoxString);
 
     //await _userSettingsDataBox.clear();
 
@@ -82,8 +86,6 @@ class LocalStorageService with ListenableServiceMixin {
     }
 
     if (_userSettingsData != null) {
-      _expenseDataBox =
-          await _appDB.openBox<ExpenseDataModel>(expenseDataBoxString);
       Map<String, dynamic> items = (await _expenseDataBox.getAllValues());
       items.forEach((key, value) {
         _expenses.add(ExpenseDataModel.fromJson(value));
@@ -113,6 +115,16 @@ class LocalStorageService with ListenableServiceMixin {
     if (_userSettingsData != null) {
       await _userSettingsDataBox.put(
           "localUserSettingsData", _userSettingsData!.toJson());
+    }
+  }
+
+  saveExpenseData(ExpenseDataModel expenseDataModel) async {
+    try {
+      await _expenseDataBox.put(expenseDataModel.id, expenseDataModel.toJson());
+      _expenses.add(expenseDataModel);
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
   }
 }

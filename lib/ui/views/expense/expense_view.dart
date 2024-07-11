@@ -21,7 +21,17 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: const Center(child: Text("Expense view")),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return Container(
+              child: ListTile(
+                title: Text(viewModel.allExpenses[index].type!.first),
+                trailing: Text(viewModel.allExpenses[index].amount.toString()),
+              ),
+            );
+          },
+          itemCount: viewModel.allExpenses.length,
+        ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
