@@ -21,9 +21,8 @@ class ExpenseNavigatorView extends StackedView<ExpenseNavigatorViewModel> {
   ) {
     return Navigator(
       key: viewModel.navigatorKey,
-      initialRoute: "/expense-view",
       onGenerateRoute: (settings) {
-        if (settings.name == "/expense-view") {
+        if (settings.name == "/") {
           return MyRoute(
             builder: (context) {
               return ExpenseView(

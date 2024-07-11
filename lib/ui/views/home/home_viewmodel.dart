@@ -49,4 +49,17 @@ class HomeViewModel extends IndexTrackingViewModel {
       _settingsViewNavigationKey;
 
   GlobalKey get bottomNavBarKey => _bottomNavBarKey;
+
+  navigateBack({required bool goBack}) async {
+    switch (currentIndex) {
+      case 0:
+        {
+          if (_expenseViewNavigationKey.currentState?.canPop() ?? false) {
+            _expenseViewNavigationKey.currentState!.pop();
+          }
+          break;
+        }
+      default:
+    }
+  }
 }

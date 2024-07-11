@@ -41,7 +41,11 @@ class HomeView extends StackedView<HomeViewModel> {
           backgroundColor: Colors.white,
           selectedItemColor: Colors.black,
           onTap: (value) async {
-            viewModel.setIndex(value);
+            if (viewModel.currentIndex == value) {
+              await viewModel.navigateBack(goBack: false);
+            } else {
+              viewModel.setIndex(value);
+            }
           },
           selectedFontSize: 16,
           unselectedFontSize: 16,
