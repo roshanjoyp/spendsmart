@@ -27,6 +27,7 @@ class UserSettingsService with ListenableServiceMixin {
       pushNotificationTime: pushNotificationTime,
       pushNotificationsEnabled: pushNotificationsEnabled,
     );
+    notifyListeners();
   }
 
   Future<void> saveUserSettingsData() async {

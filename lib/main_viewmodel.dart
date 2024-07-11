@@ -19,4 +19,12 @@ class MainViewModel extends ReactiveViewModel {
   MainViewModel() {
     logger.i('MainViewModel initialized');
   }
+
+  // Used as temporary fix to avoid called setstate during build
+  @override
+  void notifyListeners() {
+    Future.microtask(() {
+      super.notifyListeners();
+    });
+  }
 }

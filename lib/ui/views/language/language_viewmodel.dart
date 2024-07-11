@@ -1,4 +1,6 @@
+import 'package:logger/logger.dart';
 import 'package:spendsmart/app/app.locator.dart';
+import 'package:spendsmart/app/app.logger.dart';
 import 'package:spendsmart/app/app.router.dart';
 import 'package:spendsmart/constants/app_defaults.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
@@ -8,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class LanguageViewModel extends BaseViewModel {
+  final Logger _logger = getLogger('LanguageViewModel');
   final _userSettingService = locator<UserSettingsService>();
   final _navigationService = locator<NavigationService>();
 
@@ -31,11 +34,11 @@ class LanguageViewModel extends BaseViewModel {
       languages[_selectedLanguageIndex].languageCountryCode;
 
   LanguageViewModel() {
-    _selectedLanguageIndex =
-        languages.indexWhere((item) => item.language == appDefaultLanguage);
+    _selectedLanguageIndex = languages
+        .indexWhere((item) => item.languageCountryCode == appDefaultLanguage);
 
-    _selectedCurrencyIndex =
-        currencies.indexWhere((item) => item.currency == appDefaultCurrency);
+    _selectedCurrencyIndex = currencies
+        .indexWhere((item) => item.currencySymbol == appDefaultCurrency);
 
     _userSettingService.updateUserSettings(
         currency: selectedCurrencySymbol, language: selectedLanguageCode);
@@ -54,18 +57,23 @@ class LanguageViewModel extends BaseViewModel {
   void setSelectedLanguage(int index) {
     _selectedLanguageIndex = index;
     _isLanguageSheetExpanded = false;
+    _userSettingService.updateUserSettings(language: selectedLanguageCode);
     rebuildUi();
   }
 
   void setSelectedCurrency(int index) {
     _selectedCurrencyIndex = index;
     _isCurrencySheetExpanded = false;
+    _userSettingService.updateUserSettings(
+      currency: selectedCurrencySymbol,
+    );
     rebuildUi();
   }
 
   void saveAndContinue() async {
     setBusy(true);
     await _userSettingService.saveUserSettingsData();
+    _logger.i('Language and Currency saved');
     setBusy(false);
     _navigationService.replaceWithHomeView();
   }
