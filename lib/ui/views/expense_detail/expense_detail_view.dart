@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
+import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -23,13 +24,18 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Form(
           child: ListView(
             children: [
+              const SizedBox(
+                height: 20,
+              ),
               AmountComponent(viewModel),
               DateComponent(viewModel),
               CategoryComponent(viewModel),
@@ -48,7 +54,7 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                         }
                       },
                       isLoading: viewModel.isBusy,
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: kcPrimaryColor,
                       textColor: Colors.white),
                 ),
 
@@ -66,14 +72,14 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                         }
                       },
                       isLoading: viewModel.isBusy,
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: kcPrimaryColor,
                       textColor: Colors.white),
                 ),
 
               //DeleteButton
               if (!viewModel.isNewEntry)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: CustomElevatedButton(
                       width: double.infinity,
                       text: "Delete expense",
@@ -84,9 +90,12 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                         }
                       },
                       isLoading: viewModel.isBusy,
-                      backgroundColor: Colors.red,
+                      backgroundColor: kcDeleteColor,
                       textColor: Colors.white),
                 ),
+              const SizedBox(
+                height: 100,
+              )
             ],
           ),
         ),

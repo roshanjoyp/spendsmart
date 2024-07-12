@@ -44,6 +44,8 @@ class CustomElevatedButtonState extends State<CustomElevatedButton> {
                 widget.text,
                 style: TextStyle(
                   color: widget.textColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
       ),

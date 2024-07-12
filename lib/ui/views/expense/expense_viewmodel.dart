@@ -3,11 +3,13 @@ import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/models/app/daily_summary.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
+import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpenseViewModel extends BaseViewModel {
   late final GlobalKey<NavigatorState> _navigatorKey;
   final _expenseService = locator<ExpenseService>();
+  final _userSettingsService = locator<UserSettingsService>();
 
   ExpenseViewModel(this._navigatorKey);
 
@@ -16,6 +18,10 @@ class ExpenseViewModel extends BaseViewModel {
 
   List<DailySummary> get dailySummaries =>
       generateDailySummary(_filteredExpenses);
+
+  String get getLocale => _userSettingsService.languageString!;
+
+  String get getCurrency => _userSettingsService.currencySymbol!;
 
   void initialize() {
     _allExpenses = _expenseService.getAllExpenses;
@@ -112,5 +118,10 @@ class ExpenseViewModel extends BaseViewModel {
     }
 
     return dailySummaries.reversed.toList();
+  }
+
+  Future<void> refresh() async {
+    initialize();
+    rebuildUi();
   }
 }

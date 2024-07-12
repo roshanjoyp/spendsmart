@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_viewmodel.dart';
@@ -13,7 +14,7 @@ class SettingsView extends StackedView<SettingsViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.white,
       body: ListView(
         children: [
           GestureDetector(
@@ -24,7 +25,7 @@ class SettingsView extends StackedView<SettingsViewModel> {
                   title: Text("Delete All Data"),
                   leading: Icon(
                     Icons.delete,
-                    color: Colors.red,
+                    color: kcDeleteColor,
                   ),
                 ),
               )),

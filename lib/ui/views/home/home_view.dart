@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:stacked/stacked.dart';
 
 import '../expense_navigator/expense_navigator_view.dart';
@@ -16,6 +17,7 @@ class HomeView extends StackedView<HomeViewModel> {
     Widget? child,
   ) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -39,7 +41,7 @@ class HomeView extends StackedView<HomeViewModel> {
           type: BottomNavigationBarType.fixed,
           currentIndex: viewModel.currentIndex,
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.black,
+          selectedItemColor: kcPrimaryColor,
           onTap: (value) async {
             if (viewModel.currentIndex == value) {
               await viewModel.navigateBack(goBack: false);
@@ -60,7 +62,7 @@ class HomeView extends StackedView<HomeViewModel> {
             ),
             BottomNavigationBarItem(
               label: 'Settings',
-              icon: Icon(Icons.settings_outlined),
+              icon: Icon(Icons.settings),
             ),
           ],
         ),

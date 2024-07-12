@@ -3,13 +3,18 @@ import 'package:spendsmart/models/app/monthly_summary.dart';
 import 'package:spendsmart/models/app/type_summary.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
+import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 
 class SummaryViewModel extends BaseViewModel {
   final _expenseService = locator<ExpenseService>();
-
+  final _userSettingsService = locator<UserSettingsService>();
   List<MonthlySummary> _monthlySummaries = [];
   List<MonthlySummary> get monthlySummaries => _monthlySummaries;
+
+  String get getLocale => _userSettingsService.languageString!;
+
+  String get getCurrency => _userSettingsService.currencySymbol!;
 
   SummaryViewModel() {
     initialize();

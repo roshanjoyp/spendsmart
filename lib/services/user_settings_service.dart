@@ -14,6 +14,7 @@ class UserSettingsService with ListenableServiceMixin {
   }
 
   String? get languageString => userSettingsData?.language;
+  String? get currencySymbol => userSettingsData?.currency;
 
   void updateUserSettings({
     String? language,
