@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
 import 'package:spendsmart/models/app/language_model.dart';
+import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/ui/common/ui_helpers.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
@@ -19,7 +20,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE6EFFF),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -33,7 +34,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                            vertical: 8, horizontal: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -61,7 +62,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                       const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                            vertical: 8, horizontal: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -93,20 +94,24 @@ class LanguageView extends StackedView<LanguageViewModel> {
                 ),
               ),
               const Spacer(),
-              CustomElevatedButton(
-                width: MediaQuery.of(context).size.width,
-                text: AppLocalizations.of(context)!.saveAndContinue,
-                onTap: () {
-                  viewModel.saveAndContinue();
-                },
-                isLoading: viewModel.isBusy,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-              ),
             ],
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CustomElevatedButton(
+          width: MediaQuery.of(context).size.width,
+          text: AppLocalizations.of(context)!.saveAndContinue,
+          onTap: () {
+            viewModel.saveAndContinue();
+          },
+          isLoading: viewModel.isBusy,
+          backgroundColor: kcPrimaryColor,
+          textColor: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -130,10 +135,10 @@ class LanguageView extends StackedView<LanguageViewModel> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
+              color: Colors.black.withOpacity(.05),
             ),
             width: double.infinity,
             child: GestureDetector(
@@ -144,20 +149,28 @@ class LanguageView extends StackedView<LanguageViewModel> {
                         fit: BoxFit.contain,
                         child: Text(
                           currency!,
-                          style: const TextStyle(fontSize: 20),
+                          style: const TextStyle(
+                              fontSize: 20, color: kcPrimaryColor),
                         ))
-                    : Icon(icon),
+                    : Icon(
+                        icon,
+                        color: kcPrimaryColor,
+                      ),
                 title: Text(
                   title,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
+                    color: kcPrimaryColor,
                   ),
                 ),
                 trailing: AnimatedRotation(
                   turns: expanded ? 0.5 : 0,
                   duration: const Duration(milliseconds: 300),
-                  child: const Icon(Icons.expand_more),
+                  child: const Icon(
+                    Icons.expand_more,
+                    color: kcPrimaryColor,
+                  ),
                 ),
               ),
             ),
@@ -169,57 +182,62 @@ class LanguageView extends StackedView<LanguageViewModel> {
             margin: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
+              color: Colors.black.withOpacity(.05),
             ),
+            alignment: Alignment.center,
             clipBehavior: Clip.hardEdge,
             height: expanded ? dropdownHeight : 0,
-            child: expanded
-                ? ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: .25,
-                        color: Colors.black.withOpacity(.05),
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      Widget? trailing = selectedValue == list[index]
-                          ? const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16),
-                              child: Icon(Icons.check),
-                            )
-                          : null;
-                      return GestureDetector(
-                        onTap: () => onSelected(index),
-                        child: Container(
-                          height: 50,
-                          width: double.infinity,
-                          decoration: const BoxDecoration(color: Colors.white),
-                          child: ListTile(
-                            leading: isCurrency
-                                ? FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(
-                                      currencies![index],
-                                      style: const TextStyle(fontSize: 20),
-                                    ))
-                                : null,
-                            title: Text(
-                              list[index],
+            child: Center(
+              child: expanded
+                  ? ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: .25,
+                          color: Colors.black.withOpacity(.05),
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        Widget? trailing = selectedValue == list[index]
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 16),
+                                child: Icon(
+                                  Icons.check_circle_outlined,
+                                  color: kcPrimaryColor,
+                                ),
+                              )
+                            : null;
+                        return GestureDetector(
+                          onTap: () => onSelected(index),
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: ListTile(
+                              leading: isCurrency
+                                  ? FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(
+                                        currencies![index],
+                                        style: const TextStyle(fontSize: 22),
+                                      ))
+                                  : null,
+                              title: Text(
+                                list[index],
+                              ),
+                              trailing: trailing,
                             ),
-                            trailing: trailing,
-                          ),
-                        ).animate(target: expanded ? 1 : 0).fadeIn(
-                            delay: Duration(
-                                milliseconds: 200 *
-                                    (expanded
-                                        ? index
-                                        : (list.length - index)))),
-                      );
-                    },
-                    itemCount: list.length,
-                  )
-                : null,
+                          ).animate(target: expanded ? 1 : 0).fadeIn(
+                              delay: Duration(
+                                  milliseconds: 200 *
+                                      (expanded
+                                          ? index
+                                          : (list.length - index)))),
+                        );
+                      },
+                      itemCount: list.length,
+                    )
+                  : null,
+            ),
           ),
         ],
       ),
