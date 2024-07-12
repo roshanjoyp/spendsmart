@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
@@ -9,6 +10,7 @@ import 'package:stacked/stacked.dart';
 
 class ExpenseDetailViewModel extends BaseViewModel {
   ExpenseDataModel? _expenseDataModel;
+  AppLocalizations? _appLocalizations;
 
   final _expenseService = locator<ExpenseService>();
   final _userService = locator<UserSettingsService>();
@@ -17,15 +19,21 @@ class ExpenseDetailViewModel extends BaseViewModel {
     ExpenseDataModel? expenseDataModel,
   }) {
     _expenseDataModel = expenseDataModel;
+    Set<String> userList = _expenseService.getAllTypes();
+
+    _appLocalizations =
+        lookupAppLocalizations(Locale(_userService.languageString!));
 
     _allCategories = {
-      "Groceries",
-      "Entertainment",
-      "Utilities",
-      "Personal",
-      "Housing",
-      "Transport",
+      _appLocalizations!.groceries,
+      _appLocalizations!.entertainment,
+      _appLocalizations!.utilities,
+      _appLocalizations!.personal,
+      _appLocalizations!.miscellaneous,
+      _appLocalizations!.transport,
     };
+    _allCategories.addAll(userList);
+
     _expenseDate = DateTime.now();
 
     if (_expenseDataModel != null) {
@@ -76,12 +84,12 @@ class ExpenseDetailViewModel extends BaseViewModel {
 
   bool validate() {
     if (amount == null) {
-      _amountInputValidationMessage = "Enter an amount";
+      _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
       rebuildUi();
       return false;
     }
     if (selectedType == null) {
-      _categoryInputValidationMessage = "Enter atleast one category";
+      _categoryInputValidationMessage = _appLocalizations!.enterACategory;
       rebuildUi();
       return false;
     }
@@ -102,12 +110,13 @@ class ExpenseDetailViewModel extends BaseViewModel {
       }
 
       if (amount == null) {
-        _amountInputValidationMessage = "Invalid amount format";
+        _amountInputValidationMessage = _appLocalizations!.invalidAmountFormat;
       } else if (amount! < 0 || amount! > 100000000000000) {
-        _amountInputValidationMessage = "Amount range not supported";
+        _amountInputValidationMessage =
+            _appLocalizations!.amountRangeNotSupporterd;
       } else {}
     } else {
-      _amountInputValidationMessage = "Enter an amount";
+      _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
     }
 
     rebuildUi();
@@ -161,7 +170,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       _recommendedCategories.clear();
       _categoryInputValidationMessage = null;
     } else {
-      _categoryInputValidationMessage = "Enter a category";
+      _categoryInputValidationMessage = _appLocalizations!.enterACategory;
     }
     rebuildUi();
   }

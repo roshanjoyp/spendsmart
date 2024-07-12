@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/app/app.router.dart';
 import 'package:spendsmart/constants/app_defaults.dart';
@@ -18,6 +19,11 @@ class SettingsViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _expenseService = locator<ExpenseService>();
   final _notificationService = locator<LocalNotificationService>();
+  AppLocalizations? _appLocalizations;
+
+  SettingsViewModel() {
+    initialse();
+  }
 
   String get language {
     String code = _userSettingsService.languageString!;
@@ -51,9 +57,17 @@ class SettingsViewModel extends BaseViewModel {
       final random = Random();
       final amount = (random.nextDouble() * 1000).roundToDouble();
       final date = DateTime.now().subtract(Duration(days: random.nextInt(365)));
-      final types = ["Food", "Travel", "Entertainment", "Bills", "Other"];
+      final types = [
+        _appLocalizations!.groceries,
+        _appLocalizations!.entertainment,
+        _appLocalizations!.utilities,
+        _appLocalizations!.personal,
+        _appLocalizations!.miscellaneous,
+        _appLocalizations!.transport,
+      ];
       final type = types[random.nextInt(types.length)];
-      final description = "Mock description ${index + 1}";
+      final description =
+          "${_appLocalizations!.aShortDescription}} ${index + 1}";
       return ExpenseDataModel(
         id: 'id_${index + 1}',
         amount: amount,
@@ -116,5 +130,10 @@ class SettingsViewModel extends BaseViewModel {
     await _userSettingsService.setPushNotificationTime(
         picked.hour, picked.minute);
     rebuildUi();
+  }
+
+  void initialse() {
+    _appLocalizations =
+        lookupAppLocalizations(Locale(_userSettingsService.languageString!));
   }
 }

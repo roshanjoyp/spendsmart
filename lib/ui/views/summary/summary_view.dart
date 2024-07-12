@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/util/number_format_util.dart';
@@ -21,11 +22,11 @@ class SummaryView extends StackedView<SummaryViewModel> {
         onRefresh: viewModel.refresh,
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
               floating: true,
               pinned: true,
               snap: false,
-              title: Text('Monthly Summary'),
+              title: Text(AppLocalizations.of(context)!.monthlySummary),
               backgroundColor: Colors.white,
             ),
             SliverPadding(
@@ -58,14 +59,14 @@ class SummaryView extends StackedView<SummaryViewModel> {
                                     color: Colors.white,
                                   ),
                                   title: Text(
-                                    DateFormat('MMMM yyyy')
+                                    DateFormat('MMMM yyyy', viewModel.getLocale)
                                         .format(monthlySummary.month),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                   ),
                                   subtitle: Text(
-                                    "${monthlySummary.percentageChange.abs().toStringAsFixed(2)}% ${monthlySummary.percentageChange >= 0 ? 'more' : 'less'} than previous month",
+                                    "${monthlySummary.percentageChange.abs().toStringAsFixed(2)}% ${monthlySummary.percentageChange >= 0 ? AppLocalizations.of(context)!.more : AppLocalizations.of(context)!.less} ${AppLocalizations.of(context)!.thanPreviousMonth}",
                                     style: TextStyle(
                                       color:
                                           monthlySummary.percentageChange >= 0
@@ -122,7 +123,7 @@ class SummaryView extends StackedView<SummaryViewModel> {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 subtitle: Text(
-                                  "${typeSummary.percentage.toStringAsFixed(2)}% of total month's spends",
+                                  "${typeSummary.percentage.toStringAsFixed(2)}% ${AppLocalizations.of(context)!.ofTotalMonthSpend}",
                                   style: const TextStyle(fontSize: 14),
                                 ),
                                 trailing: Text(

@@ -227,12 +227,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
                               ),
                               trailing: trailing,
                             ),
-                          ).animate(target: expanded ? 1 : 0).fadeIn(
-                              delay: Duration(
-                                  milliseconds: 200 *
-                                      (expanded
-                                          ? index
-                                          : (list.length - index)))),
+                          ).animate(target: expanded ? 1 : 0).fadeIn(),
                         );
                       },
                       itemCount: list.length,

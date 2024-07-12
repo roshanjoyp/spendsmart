@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
@@ -46,7 +47,7 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: CustomElevatedButton(
                       width: double.infinity,
-                      text: "Add new expense",
+                      text: AppLocalizations.of(context)!.addNewExpense,
                       onTap: () async {
                         bool result = await viewModel.addNewExpense();
                         if (result) {
@@ -64,7 +65,7 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: CustomElevatedButton(
                       width: double.infinity,
-                      text: "Update expense",
+                      text: AppLocalizations.of(context)!.updateExpense,
                       onTap: () async {
                         bool result = await viewModel.updateExpense();
                         if (result) {
@@ -82,7 +83,7 @@ class ExpenseDetailView extends StackedView<ExpenseDetailViewModel> {
                   padding: const EdgeInsets.only(bottom: 16),
                   child: CustomElevatedButton(
                       width: double.infinity,
-                      text: "Delete expense",
+                      text: AppLocalizations.of(context)!.deleteExpense,
                       onTap: () async {
                         bool result = await viewModel.deleteExpense();
                         if (result) {

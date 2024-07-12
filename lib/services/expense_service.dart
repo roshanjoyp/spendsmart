@@ -15,4 +15,12 @@ class ExpenseService {
   Future<void> deleteExpenseData(ExpenseDataModel expenseDataModel) async {
     await _localStorageService.deleteExpenseData(expenseDataModel.id);
   }
+
+  Set<String> getAllTypes() {
+    Set<String> types = {};
+    for (var expense in _localStorageService.expenses) {
+      types.add(expense.type);
+    }
+    return types;
+  }
 }

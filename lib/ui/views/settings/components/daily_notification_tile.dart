@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 
 import '../settings_viewmodel.dart';
@@ -17,12 +18,13 @@ class DailyNotificationTile extends StatelessWidget {
         elevation: 10,
         borderRadius: BorderRadius.circular(8),
         child: ListTile(
-          title: const Text("Daily Notification"),
+          title: Text(AppLocalizations.of(context)!.dailyNotification),
           leading: const Icon(
             Icons.notifications,
             color: kcPrimaryColor,
           ),
-          subtitle: const Text("We recommend turning on daily notification"),
+          subtitle: Text(AppLocalizations.of(context)!
+              .weRecommendTurningOnDailyNotification),
           trailing: Switch(
             value: viewModel.isDailyNotificationOn,
             onChanged: viewModel.onDailyNotificationToggle,

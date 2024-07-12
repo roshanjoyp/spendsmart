@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:stacked/stacked.dart';
 
@@ -51,18 +52,18 @@ class HomeView extends StackedView<HomeViewModel> {
           },
           selectedFontSize: 16,
           unselectedFontSize: 16,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              label: 'Expenses',
-              icon: Icon(Icons.local_offer_outlined),
+              label: AppLocalizations.of(context)!.expenses,
+              icon: const Icon(Icons.local_offer_outlined),
             ),
             BottomNavigationBarItem(
-              label: 'Summary',
-              icon: Icon(Icons.search_outlined),
+              label: AppLocalizations.of(context)!.summary,
+              icon: const Icon(Icons.search_outlined),
             ),
             BottomNavigationBarItem(
-              label: 'Settings',
-              icon: Icon(Icons.settings),
+              label: AppLocalizations.of(context)!.settings,
+              icon: const Icon(Icons.settings),
             ),
           ],
         ),

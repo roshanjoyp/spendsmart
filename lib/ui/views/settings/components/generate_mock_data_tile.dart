@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../settings_viewmodel.dart';
 
@@ -14,11 +15,11 @@ class GenerateMockDataTile extends StatelessWidget {
       onTap: () async {
         await viewModel.generatemockData();
       },
-      child: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: ListTile(
-          title: Text("Generate mock data"),
-          leading: Icon(
+          title: Text(AppLocalizations.of(context)!.genereateMockData),
+          leading: const Icon(
             Icons.generating_tokens,
             color: Colors.green,
           ),

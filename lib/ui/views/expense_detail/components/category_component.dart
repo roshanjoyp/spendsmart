@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 
@@ -21,7 +22,7 @@ class CategoryComponent extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: viewModel.selectedType == null
-                  ? const Text("No category selected")
+                  ? Text(AppLocalizations.of(context)!.noCategorySelected)
                   : Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 12),
@@ -50,7 +51,7 @@ class CategoryComponent extends StatelessWidget {
           TextField(
             controller: viewModel.categoryController,
             decoration: InputDecoration(
-              labelText: 'Category',
+              labelText: AppLocalizations.of(context)!.category,
               border: const OutlineInputBorder(),
               errorText: viewModel.categoryInputValidationMessage,
               suffixIcon: const Icon(Icons.search, color: kcPrimaryColor),
@@ -94,7 +95,7 @@ class CategoryComponent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: CustomElevatedButton(
               width: double.infinity,
-              text: "Add Category",
+              text: AppLocalizations.of(context)!.addCategory,
               onTap: viewModel.addCategoryFromText,
               isLoading: false,
               backgroundColor: kcSecondaryColor,

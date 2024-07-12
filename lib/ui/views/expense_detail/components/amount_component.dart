@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:spendsmart/ui/views/expense_detail/expense_detail_viewmodel.dart';
 
 class AmountComponent extends StatelessWidget {
@@ -10,7 +11,7 @@ class AmountComponent extends StatelessWidget {
     return TextFormField(
       controller: viewModel.amountController,
       decoration: InputDecoration(
-        labelText: 'Amount',
+        labelText: AppLocalizations.of(context)!.amount,
         border: const OutlineInputBorder(),
         errorText: viewModel.amountInputValidationMessage,
         prefixText: viewModel.curerencyText,

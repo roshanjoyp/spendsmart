@@ -28,7 +28,7 @@ class LanguageViewModel extends BaseViewModel {
   String get selectedCurrencyValue =>
       currencies[_selectedCurrencyIndex].currency;
   String get selectedLanguageValue =>
-      languages[_selectedLanguageIndex].language;
+      languages[_selectedLanguageIndex].englishLanguageName;
 
   String get selectedCurrencySymbol =>
       currencies[_selectedCurrencyIndex].currencySymbol;

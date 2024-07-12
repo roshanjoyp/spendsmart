@@ -13,4 +13,6 @@ class LanguageModel {
 List<LanguageModel> languages = [
   LanguageModel("en", "English", "English"),
   LanguageModel("es", "Spanish", "Español"),
+  LanguageModel("hi", "Hindi", "हिन्दी"),
+  LanguageModel("zh", "Chinese", "中文"),
 ];

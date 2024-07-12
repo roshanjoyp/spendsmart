@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 
@@ -35,7 +36,7 @@ class NotificationTimeTile extends StatelessWidget {
         elevation: 10,
         borderRadius: BorderRadius.circular(8),
         child: ListTile(
-          title: const Text("Notification Time"),
+          title: Text(AppLocalizations.of(context)!.notificationTime),
           leading: const Icon(
             Icons.punch_clock,
             color: kcPrimaryColor,

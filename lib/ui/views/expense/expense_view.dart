@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
@@ -30,7 +31,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
               floating: true,
               pinned: true,
               snap: false,
-              title: const Text('Expenses'),
+              title: Text(AppLocalizations.of(context)!.expenses),
               backgroundColor: Colors.white,
               actions: [
                 IconButton(
@@ -55,8 +56,10 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
               sliver: viewModel.dailySummaries.isEmpty
-                  ? const SliverFillRemaining(
-                      child: Center(child: Text('No Expenses Found')),
+                  ? SliverFillRemaining(
+                      child: Center(
+                          child: Text(
+                              AppLocalizations.of(context)!.noExpensesFound)),
                     )
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -89,14 +92,15 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                                         ),
                                       ),
                                       title: Text(
-                                        DateFormat('d EEEE MMM, y')
+                                        DateFormat('d EEEE MMM, y',
+                                                viewModel.getLocale)
                                             .format(dailySummary.date),
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Text(
-                                        "${dailySummary.percentageChange.abs().toStringAsFixed(2)}% ${dailySummary.percentageChange >= 0 ? 'more' : 'less'} than previous day",
+                                        "${dailySummary.percentageChange.abs().toStringAsFixed(2)}% ${dailySummary.percentageChange >= 0 ? AppLocalizations.of(context)!.more : AppLocalizations.of(context)!.less} ${AppLocalizations.of(context)!.thanPreviousDay}",
                                         style: TextStyle(
                                           color:
                                               dailySummary.percentageChange >= 0
@@ -165,8 +169,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           subtitle: Text(
-                                            expense.description ??
-                                                'No description',
+                                            expense.description ?? '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
@@ -205,7 +208,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: CustomElevatedButton(
           width: MediaQuery.of(context).size.width,
-          text: "Add New Expense",
+          text: AppLocalizations.of(context)!.addNewExpense,
           onTap: () {
             viewModel.addNewExpense();
           },

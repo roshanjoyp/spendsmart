@@ -22,15 +22,15 @@ class StartupView extends StackedView<StartupViewModel> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Spend Smart',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.spendSmart,
+              style: const TextStyle(
                   fontSize: 40, fontWeight: FontWeight.w700, color: kcTextDark),
             ),
             verticalSpaceSmall,
-            const Text(
-              'Your Personal Expense Tracker',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.yourPersonalExpenseTracker,
+              style: const TextStyle(
                   fontSize: 20, fontWeight: FontWeight.w500, color: kcTextDark),
             ),
             verticalSpaceSmall,
