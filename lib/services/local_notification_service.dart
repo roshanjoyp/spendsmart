@@ -65,7 +65,8 @@ class LocalNotificationService {
         0,
         'Daily Expense Reminder',
         'Don\'t forget to add your daily expenses!',
-        _nextInstanceOfTime(time),
+        //_nextInstanceOfTime(time),
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'daily_notification_channel_id',

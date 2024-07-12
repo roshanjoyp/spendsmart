@@ -23,7 +23,7 @@ class UserSettingsService with ListenableServiceMixin {
   int? get pushNotificationTimeHour => userSettingsData?.hour;
   int? get pushNotificationTimeMinute => userSettingsData?.minute;
 
-  void updateUserSettings({
+  Future<void> updateUserSettings({
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,

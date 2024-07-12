@@ -9,37 +9,42 @@ import '../helpers/test_helpers.dart';
 
 void main() {
   StartupViewModel getModel() => StartupViewModel();
-  group('StartupViewmodelTest -', () {
+
+  group('StartupViewModelTest -', () {
     setUp(() => registerServices());
     tearDown(() => locator.reset());
 
-    group('runStartupLogic -', () {
-      setUp(() => registerServices());
-      tearDown(() => locator.reset());
-      test('When userSettingsData is null, should navigate to LanguageView',
-          () {
-        final userSettingsModelMock = getAndRegisterUserSettingsService();
-        when(userSettingsModelMock.userSettingsData).thenReturn(null);
+    test('When userSettingsData is null, should navigate to LanguageView',
+        () async {
+      final userSettingsService = getAndRegisterUserSettingsService();
+      final navigationService = getAndRegisterNavigationService();
 
-        final navigationService = getAndRegisterNavigationService();
+      when(userSettingsService.userSettingsData).thenReturn(null);
 
-        final model = getModel();
-        model.runStartupLogic();
-        verify(navigationService.replaceWithLanguageView());
-      });
+      final model = getModel();
+      await model.runStartupLogic();
 
-      test('When userSettingsData is not null, should navigate to HomeView',
-          () {
-        final userSettingsModelMock = getAndRegisterUserSettingsService();
-        when(userSettingsModelMock.userSettingsData).thenReturn(
-            UserSettingsModel(language: "language", currency: "currency"));
+      verify(navigationService.replaceWithLanguageView()).called(1);
+    });
 
-        final navigationService = getAndRegisterNavigationService();
+    test('When userSettingsData is not null, should navigate to HomeView',
+        () async {
+      final userSettingsService = getAndRegisterUserSettingsService();
+      final navigationService = getAndRegisterNavigationService();
+      const userSettings = UserSettingsModel(
+        language: 'en',
+        currency: 'USD',
+        pushNotificationsEnabled: true,
+        hour: 9,
+        minute: 30,
+      );
 
-        final model = getModel();
-        model.runStartupLogic();
-        verify(navigationService.replaceWithHomeView());
-      });
+      when(userSettingsService.userSettingsData).thenReturn(userSettings);
+
+      final model = getModel();
+      await model.runStartupLogic();
+
+      verify(navigationService.replaceWithHomeView()).called(1);
     });
   });
 }

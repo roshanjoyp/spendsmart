@@ -919,14 +919,14 @@ class MockUserSettingsService extends _i1.Mock
       ) as int);
 
   @override
-  void updateUserSettings({
+  _i6.Future<void> updateUserSettings({
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,
     int? hour,
     int? minute,
   }) =>
-      super.noSuchMethod(
+      (super.noSuchMethod(
         Invocation.method(
           #updateUserSettings,
           [],
@@ -938,8 +938,9 @@ class MockUserSettingsService extends _i1.Mock
             #minute: minute,
           },
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> saveUserSettingsData() => (super.noSuchMethod(

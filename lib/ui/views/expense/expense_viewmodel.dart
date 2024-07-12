@@ -49,7 +49,10 @@ class ExpenseViewModel extends BaseViewModel {
 
   void filterExpensesByDate(DateTime startDate, DateTime endDate) {
     _filteredExpenses = _allExpenses.where((expense) {
-      return expense.date.isAfter(startDate) && expense.date.isBefore(endDate);
+      return (expense.date.isAtSameMomentAs(startDate) ||
+              expense.date.isAfter(startDate)) &&
+          (expense.date.isAtSameMomentAs(endDate) ||
+              expense.date.isBefore(endDate));
     }).toList();
     sortExpensesByDate();
     logger.i('Expenses filtered by date: $startDate to $endDate');

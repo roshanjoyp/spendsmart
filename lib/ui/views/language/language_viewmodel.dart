@@ -38,10 +38,16 @@ class LanguageViewModel extends BaseViewModel {
       languages[_selectedLanguageIndex].languageCountryCode;
 
   void _initializeIndices() {
+    var selectedLanguage = appDefaultLanguage;
+    var selectedCurrency = appDefaultCurrency;
+    if (_fromSettings) {
+      selectedLanguage = _userSettingService.languageString!;
+      selectedCurrency = _userSettingService.currencySymbol!;
+    }
     _selectedLanguageIndex = languages
-        .indexWhere((item) => item.languageCountryCode == appDefaultLanguage);
+        .indexWhere((item) => item.languageCountryCode == selectedLanguage);
     _selectedCurrencyIndex = currencies
-        .indexWhere((item) => item.currencySymbol == appDefaultCurrency);
+        .indexWhere((item) => item.currencySymbol == selectedCurrency);
   }
 
   void _updateUserSettings() {

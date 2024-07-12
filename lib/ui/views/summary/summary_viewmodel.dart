@@ -37,6 +37,7 @@ class SummaryViewModel extends BaseViewModel {
   }
 
   List<MonthlySummary> generateMonthlySummary(List<ExpenseDataModel> expenses) {
+    logger.i(expenses.length);
     // Sort expenses by date
     expenses.sort((a, b) => a.date.compareTo(b.date));
 
@@ -110,7 +111,7 @@ class SummaryViewModel extends BaseViewModel {
         typeSummaries: typeSummaries,
       ));
     }
-
+    logger.i(monthlySummaries.length);
     return monthlySummaries.reversed.toList();
   }
 

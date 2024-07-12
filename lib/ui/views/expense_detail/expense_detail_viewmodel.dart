@@ -13,7 +13,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
   final logger = getLogger('ExpenseDetailViewModel');
 
   ExpenseDataModel? _expenseDataModel;
-  AppLocalizations? _appLocalizations;
+  late AppLocalizations _appLocalizations;
 
   final _expenseService = locator<ExpenseService>();
   final _userService = locator<UserSettingsService>();
@@ -42,6 +42,10 @@ class ExpenseDetailViewModel extends BaseViewModel {
   String? get categoryInputValidationMessage => _categoryInputValidationMessage;
   TextEditingController get descriptionController => _descriptionController;
 
+  set appLocalizations(AppLocalizations appLocalizations) {
+    _appLocalizations = appLocalizations;
+  }
+
   ExpenseDetailViewModel({
     ExpenseDataModel? expenseDataModel,
   }) {
@@ -52,12 +56,12 @@ class ExpenseDetailViewModel extends BaseViewModel {
         lookupAppLocalizations(Locale(_userService.languageString ?? 'en'));
 
     _allCategories = {
-      _appLocalizations!.groceries,
-      _appLocalizations!.entertainment,
-      _appLocalizations!.utilities,
-      _appLocalizations!.personal,
-      _appLocalizations!.miscellaneous,
-      _appLocalizations!.transport,
+      _appLocalizations.groceries,
+      _appLocalizations.entertainment,
+      _appLocalizations.utilities,
+      _appLocalizations.personal,
+      _appLocalizations.miscellaneous,
+      _appLocalizations.transport,
     };
     _allCategories.addAll(userList);
 
@@ -139,13 +143,13 @@ class ExpenseDetailViewModel extends BaseViewModel {
 
   bool validate() {
     if (amount == null) {
-      _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
+      _amountInputValidationMessage = _appLocalizations.enterAnAmount;
       rebuildUi();
       logger.w('Validation failed: amount is null');
       return false;
     }
     if (selectedType == null) {
-      _categoryInputValidationMessage = _appLocalizations!.enterACategory;
+      _categoryInputValidationMessage = _appLocalizations.enterACategory;
       rebuildUi();
       logger.w('Validation failed: selectedType is null');
       return false;
@@ -166,13 +170,13 @@ class ExpenseDetailViewModel extends BaseViewModel {
       }
 
       if (amount == null) {
-        _amountInputValidationMessage = _appLocalizations!.invalidAmountFormat;
+        _amountInputValidationMessage = _appLocalizations.invalidAmountFormat;
       } else if (amount! < 0 || amount! > 100000000000000) {
         _amountInputValidationMessage =
-            _appLocalizations!.amountRangeNotSupporterd;
+            _appLocalizations.amountRangeNotSupporterd;
       }
     } else {
-      _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
+      _amountInputValidationMessage = _appLocalizations.enterAnAmount;
     }
 
     rebuildUi();
@@ -209,7 +213,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       _recommendedCategories.clear();
       _categoryInputValidationMessage = null;
     } else {
-      _categoryInputValidationMessage = _appLocalizations!.enterACategory;
+      _categoryInputValidationMessage = _appLocalizations.enterACategory;
     }
     rebuildUi();
   }
