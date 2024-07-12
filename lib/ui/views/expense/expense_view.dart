@@ -43,28 +43,31 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
         child: ListView.builder(
           itemBuilder: (context, index) {
             ExpenseDataModel expense = viewModel.allExpenses[index];
             return GestureDetector(
               onTap: () => viewModel.editExpense(expense),
-              child: Card(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: ListTile(
-                  title: Text(
-                    expense.type,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    '${expense.date.toLocal()}'.split(' ')[0],
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                  trailing: Text(
-                    expense.amount.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    title: Text(
+                      expense.type,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      '${expense.date.toLocal()}'.split(' ')[0],
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    trailing: Text(
+                      expense.amount.toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),

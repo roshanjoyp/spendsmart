@@ -19,7 +19,7 @@ class ExpenseViewModel extends BaseViewModel {
     _allExpenses = _expenseService.getAllExpenses;
     _filteredExpenses = List.from(_allExpenses);
     sortExpensesByDate();
-    notifyListeners();
+    rebuildUi();
   }
 
   DateTime get firstDate => _allExpenses.isEmpty
@@ -32,7 +32,7 @@ class ExpenseViewModel extends BaseViewModel {
 
   void sortExpensesByDate() {
     _filteredExpenses.sort((a, b) => b.date.compareTo(a.date));
-    notifyListeners();
+    rebuildUi();
   }
 
   void filterExpensesByDate(DateTime startDate, DateTime endDate) {
@@ -40,13 +40,13 @@ class ExpenseViewModel extends BaseViewModel {
       return expense.date.isAfter(startDate) && expense.date.isBefore(endDate);
     }).toList();
     sortExpensesByDate(); // Ensure the filtered list is also sorted
-    notifyListeners();
+    rebuildUi();
   }
 
   void clearFilters() {
     _filteredExpenses = List.from(_allExpenses);
     sortExpensesByDate();
-    notifyListeners();
+    rebuildUi();
   }
 
   void addNewExpense() async {
