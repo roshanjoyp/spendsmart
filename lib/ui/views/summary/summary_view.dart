@@ -97,7 +97,7 @@ class SummaryView extends StackedView<SummaryViewModel> {
                               margin: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 4.0),
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Colors.grey.withOpacity(.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: ListTile(
@@ -140,7 +140,7 @@ class SummaryView extends StackedView<SummaryViewModel> {
                             );
                           }).toList(),
                           const SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                         ],
                       ),

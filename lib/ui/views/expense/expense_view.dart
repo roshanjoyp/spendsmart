@@ -74,7 +74,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                                   child: Container(
                                     //margin: const EdgeInsets.symmetric(vertical: 8),
                                     decoration: BoxDecoration(
-                                      color: kcPrimaryColor.withOpacity(.1),
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: ListTile(
@@ -135,8 +135,7 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                                       borderRadius: BorderRadius.circular(8),
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          color:
-                                              kcPrimaryColor.withOpacity(.03),
+                                          color: Colors.black.withOpacity(.02),
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),

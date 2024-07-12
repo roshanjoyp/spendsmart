@@ -101,8 +101,12 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.LanguageView: (data) {
+      final args = data.getArgs<LanguageViewArguments>(
+        orElse: () => const LanguageViewArguments(),
+      );
       return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i4.LanguageView(),
+        builder: (context) =>
+            _i4.LanguageView(key: args.key, fromSettings: args.fromSettings),
         settings: data,
       );
     },
@@ -149,6 +153,33 @@ class StackedRouter extends _i1.RouterBase {
 
   @override
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
+}
+
+class LanguageViewArguments {
+  const LanguageViewArguments({
+    this.key,
+    this.fromSettings = false,
+  });
+
+  final _i11.Key? key;
+
+  final bool fromSettings;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "fromSettings": "$fromSettings"}';
+  }
+
+  @override
+  bool operator ==(covariant LanguageViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.fromSettings == fromSettings;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ fromSettings.hashCode;
+  }
 }
 
 class ExpenseViewArguments {
@@ -261,14 +292,17 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLanguageView([
+  Future<dynamic> navigateToLanguageView({
+    _i11.Key? key,
+    bool fromSettings = false,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.languageView,
+        arguments: LanguageViewArguments(key: key, fromSettings: fromSettings),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -384,14 +418,17 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLanguageView([
+  Future<dynamic> replaceWithLanguageView({
+    _i11.Key? key,
+    bool fromSettings = false,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.languageView,
+        arguments: LanguageViewArguments(key: key, fromSettings: fromSettings),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

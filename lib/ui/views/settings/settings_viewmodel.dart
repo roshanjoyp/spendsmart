@@ -82,9 +82,10 @@ class SettingsViewModel extends BaseViewModel {
     //_notificationService.scheduleDailyNotification(time);
   }
 
-  void onLanguageCurrencyTap() {
+  void onLanguageCurrencyTap() async {
     // Implement navigation to language and currency settings
-    //_navigationService.navigateToLanguageView();
+    await _navigationService.navigateToLanguageView(fromSettings: true);
+    rebuildUi();
   }
 
   void onDailyNotificationToggle(bool value) async {

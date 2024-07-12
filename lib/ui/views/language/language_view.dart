@@ -11,7 +11,8 @@ import 'package:stacked/stacked.dart';
 import 'language_viewmodel.dart';
 
 class LanguageView extends StackedView<LanguageViewModel> {
-  const LanguageView({Key? key}) : super(key: key);
+  final bool fromSettings;
+  const LanguageView({Key? key, this.fromSettings = false}) : super(key: key);
 
   @override
   Widget builder(
@@ -246,5 +247,5 @@ class LanguageView extends StackedView<LanguageViewModel> {
 
   @override
   LanguageViewModel viewModelBuilder(BuildContext context) =>
-      LanguageViewModel();
+      LanguageViewModel(fromSettings);
 }

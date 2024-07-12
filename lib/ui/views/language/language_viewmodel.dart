@@ -14,6 +14,8 @@ class LanguageViewModel extends BaseViewModel {
   final _userSettingService = locator<UserSettingsService>();
   final _navigationService = locator<NavigationService>();
 
+  final bool _fromSettings;
+
   bool _isLanguageSheetExpanded = false;
   bool _isCurrencySheetExpanded = false;
 
@@ -33,7 +35,7 @@ class LanguageViewModel extends BaseViewModel {
   String get selectedLanguageCode =>
       languages[_selectedLanguageIndex].languageCountryCode;
 
-  LanguageViewModel() {
+  LanguageViewModel(this._fromSettings) {
     _selectedLanguageIndex = languages
         .indexWhere((item) => item.languageCountryCode == appDefaultLanguage);
 
@@ -75,6 +77,10 @@ class LanguageViewModel extends BaseViewModel {
     await _userSettingService.saveUserSettingsData();
     _logger.i('Language and Currency saved');
     setBusy(false);
-    _navigationService.replaceWithHomeView();
+    if (_fromSettings) {
+      _navigationService.back();
+    } else {
+      _navigationService.replaceWithHomeView();
+    }
   }
 }

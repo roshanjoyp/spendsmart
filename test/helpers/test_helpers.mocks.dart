@@ -727,13 +727,14 @@ class MockLocalStorageService extends _i1.Mock
       ) as int);
 
   @override
-  void setUserSettingsData({
+  _i6.Future<void> setUserSettingsData({
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,
-    DateTime? pushNotificationTime,
+    int? hour,
+    int? minute,
   }) =>
-      super.noSuchMethod(
+      (super.noSuchMethod(
         Invocation.method(
           #setUserSettingsData,
           [],
@@ -741,11 +742,13 @@ class MockLocalStorageService extends _i1.Mock
             #language: language,
             #currency: currency,
             #pushNotificationsEnabled: pushNotificationsEnabled,
-            #pushNotificationTime: pushNotificationTime,
+            #hour: hour,
+            #minute: minute,
           },
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> saveUserSettingsData() => (super.noSuchMethod(
@@ -865,6 +868,13 @@ class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
 class MockUserSettingsService extends _i1.Mock
     implements _i11.UserSettingsService {
   @override
+  bool get pushNotificationsEnabled => (super.noSuchMethod(
+        Invocation.getter(#pushNotificationsEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   int get listenersCount => (super.noSuchMethod(
         Invocation.getter(#listenersCount),
         returnValue: 0,
@@ -876,7 +886,8 @@ class MockUserSettingsService extends _i1.Mock
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,
-    DateTime? pushNotificationTime,
+    int? hour,
+    int? minute,
   }) =>
       super.noSuchMethod(
         Invocation.method(
@@ -886,7 +897,8 @@ class MockUserSettingsService extends _i1.Mock
             #language: language,
             #currency: currency,
             #pushNotificationsEnabled: pushNotificationsEnabled,
-            #pushNotificationTime: pushNotificationTime,
+            #hour: hour,
+            #minute: minute,
           },
         ),
         returnValueForMissingStub: null,
@@ -907,6 +919,32 @@ class MockUserSettingsService extends _i1.Mock
         Invocation.method(
           #deleteAllData,
           [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  dynamic setPushNotificationEnabled(bool? value) => super.noSuchMethod(
+        Invocation.method(
+          #setPushNotificationEnabled,
+          [value],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i6.Future<void> setPushNotificationTime(
+    int? hour,
+    int? minute,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setPushNotificationTime,
+          [
+            hour,
+            minute,
+          ],
         ),
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
@@ -954,4 +992,87 @@ class MockUserSettingsService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalNotificationService extends _i1.Mock
-    implements _i12.LocalNotificationService {}
+    implements _i12.LocalNotificationService {
+  @override
+  _i6.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<dynamic> onDidReceiveLocalNotification(
+    int? id,
+    String? title,
+    String? body,
+    String? payload,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #onDidReceiveLocalNotification,
+          [
+            id,
+            title,
+            body,
+            payload,
+          ],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+        returnValueForMissingStub: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
+
+  @override
+  _i6.Future<dynamic> onSelectNotification(String? payload) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #onSelectNotification,
+          [payload],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+        returnValueForMissingStub: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
+
+  @override
+  _i6.Future<void> requestNotificaitonPermission() => (super.noSuchMethod(
+        Invocation.method(
+          #requestNotificaitonPermission,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> scheduleDailyNotification(_i5.TimeOfDay? time) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #scheduleDailyNotification,
+          [time],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> showANotification() => (super.noSuchMethod(
+        Invocation.method(
+          #showANotification,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> cancelAllNotifications() => (super.noSuchMethod(
+        Invocation.method(
+          #cancelAllNotifications,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+}
