@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spendsmart/models/local/expense_data_model.dart';
+import 'package:intl/intl.dart';
 import 'package:spendsmart/ui/common/widgets/custom_elevated_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -43,39 +43,86 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            ExpenseDataModel expense = viewModel.allExpenses[index];
-            return GestureDetector(
-              onTap: () => viewModel.editExpense(expense),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    title: Text(
-                      expense.type,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '${expense.date.toLocal()}'.split(' ')[0],
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    trailing: Text(
-                      expense.amount.toString(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+        child: viewModel.dailySummaries.isEmpty
+            ? const Center(child: Text('No expenses found'))
+            : ListView.builder(
+                itemCount: viewModel.dailySummaries.length,
+                itemBuilder: (context, index) {
+                  final dailySummary = viewModel.dailySummaries[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.deepPurple,
+                            child: Text(
+                              dailySummary.date.day.toString(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          title: Text(
+                            DateFormat('EEEE, MMM, y')
+                                .format(dailySummary.date),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "${dailySummary.percentageChange.abs().toStringAsFixed(2)}% ${dailySummary.percentageChange >= 0 ? 'more' : 'less'} than previous day",
+                            style: TextStyle(
+                              color: dailySummary.percentageChange >= 0
+                                  ? Colors.red
+                                  : Colors.green,
+                              fontSize: 14,
+                            ),
+                          ),
+                          trailing: Text(
+                            dailySummary.totalAmount.toString(),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                      ...dailySummary.expenses.map((expense) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.deepPurple[100],
+                            child: Text(
+                              expense.type[0].toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          title: Text(
+                            expense.type,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          subtitle: Text(
+                            expense.description ?? 'No description',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          trailing: Text(
+                            expense.amount.toString(),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      }).toList(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  );
+                },
               ),
-            );
-          },
-          itemCount: viewModel.allExpenses.length,
-        ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
