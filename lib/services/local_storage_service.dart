@@ -69,8 +69,9 @@ class LocalStorageService with ListenableServiceMixin {
           await _appDB.openBox<dynamic>(userSettingsDataBoxString);
       _expenseDataBox = await _appDB.openBox<dynamic>(expenseDataBoxString);
 
-      _loadUserSettings();
-      _loadExpenses();
+      await _loadUserSettings();
+      await _loadExpenses();
+      notifyListeners();
     } catch (e) {
       logger.e('Error during initialization: $e');
     } finally {
@@ -79,7 +80,7 @@ class LocalStorageService with ListenableServiceMixin {
     }
   }
 
-  void _loadUserSettings() async {
+  Future<void> _loadUserSettings() async {
     try {
       Map<String, dynamic> data = Map.from(
           (await _userSettingsDataBox.get("localUserSettingsData")) ?? {});
@@ -89,7 +90,7 @@ class LocalStorageService with ListenableServiceMixin {
     }
   }
 
-  void _loadExpenses() async {
+  Future<void> _loadExpenses() async {
     if (_userSettingsData != null) {
       try {
         Map<String, dynamic> items = (await _expenseDataBox.getAllValues());
