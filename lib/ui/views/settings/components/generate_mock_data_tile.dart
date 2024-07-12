@@ -13,7 +13,7 @@ class GenerateMockDataTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await viewModel.generatemockData();
+        await viewModel.generateMockData();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

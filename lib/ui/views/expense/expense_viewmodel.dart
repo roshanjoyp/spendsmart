@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spendsmart/app/app.locator.dart';
+import 'package:spendsmart/app/app.logger.dart';
 import 'package:spendsmart/models/app/daily_summary.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
@@ -7,28 +8,23 @@ import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpenseViewModel extends BaseViewModel {
-  late final GlobalKey<NavigatorState> _navigatorKey;
+  final logger = getLogger('ExpenseViewModel');
+
   final _expenseService = locator<ExpenseService>();
   final _userSettingsService = locator<UserSettingsService>();
-
-  ExpenseViewModel(this._navigatorKey);
+  late final GlobalKey<NavigatorState> _navigatorKey;
 
   List<ExpenseDataModel> _allExpenses = [];
   List<ExpenseDataModel> _filteredExpenses = [];
 
+  ExpenseViewModel(this._navigatorKey);
+
   List<DailySummary> get dailySummaries =>
       generateDailySummary(_filteredExpenses);
 
-  String get getLocale => _userSettingsService.languageString!;
+  String get getLocale => _userSettingsService.languageString ?? 'en';
 
-  String get getCurrency => _userSettingsService.currencySymbol!;
-
-  void initialize() {
-    _allExpenses = _expenseService.getAllExpenses;
-    _filteredExpenses = List.from(_allExpenses);
-    sortExpensesByDate();
-    rebuildUi();
-  }
+  String get getCurrency => _userSettingsService.currencySymbol ?? '\$';
 
   DateTime get firstDate => _allExpenses.isEmpty
       ? DateTime.now()
@@ -38,39 +34,55 @@ class ExpenseViewModel extends BaseViewModel {
       ? DateTime.now()
       : _allExpenses.reduce((a, b) => a.date.isAfter(b.date) ? a : b).date;
 
+  void initialize() {
+    logger.i('Initializing ExpenseViewModel');
+    _allExpenses = _expenseService.getAllExpenses;
+    _filteredExpenses = List.from(_allExpenses);
+    sortExpensesByDate();
+  }
+
   void sortExpensesByDate() {
     _filteredExpenses.sort((a, b) => b.date.compareTo(a.date));
     rebuildUi();
+    logger.i('Expenses sorted by date');
   }
 
   void filterExpensesByDate(DateTime startDate, DateTime endDate) {
     _filteredExpenses = _allExpenses.where((expense) {
       return expense.date.isAfter(startDate) && expense.date.isBefore(endDate);
     }).toList();
-    sortExpensesByDate(); // Ensure the filtered list is also sorted
-    rebuildUi();
+    sortExpensesByDate();
+    logger.i('Expenses filtered by date: $startDate to $endDate');
   }
 
   void clearFilters() {
     _filteredExpenses = List.from(_allExpenses);
     sortExpensesByDate();
-    rebuildUi();
+    logger.i('Filters cleared');
   }
 
   void addNewExpense() async {
-    await _navigatorKey.currentState!.pushNamed("/expense-detail-view");
-    initialize();
-    rebuildUi();
+    try {
+      await _navigatorKey.currentState!.pushNamed("/expense-detail-view");
+      initialize();
+    } catch (e) {
+      logger.e('Error adding new expense: $e');
+    }
   }
 
   Future<void> editExpense(ExpenseDataModel expense) async {
-    await _navigatorKey.currentState!
-        .pushNamed("/expense-detail-view", arguments: [expense]);
-    initialize();
-    rebuildUi();
+    try {
+      await _navigatorKey.currentState!
+          .pushNamed("/expense-detail-view", arguments: [expense]);
+      initialize();
+    } catch (e) {
+      logger.e('Error editing expense: $e');
+    }
   }
 
   List<DailySummary> generateDailySummary(List<ExpenseDataModel> expenses) {
+    logger.i('Generating daily summary');
+
     // Sort expenses by date
     expenses.sort((a, b) => a.date.compareTo(b.date));
 
@@ -79,10 +91,7 @@ class ExpenseViewModel extends BaseViewModel {
     for (var expense in expenses) {
       String dayKey =
           "${expense.date.year}-${expense.date.month.toString().padLeft(2, '0')}-${expense.date.day.toString().padLeft(2, '0')}";
-      if (!expensesByDay.containsKey(dayKey)) {
-        expensesByDay[dayKey] = [];
-      }
-      expensesByDay[dayKey]!.add(expense);
+      expensesByDay.putIfAbsent(dayKey, () => []).add(expense);
     }
 
     // Generate the daily summary
@@ -121,7 +130,7 @@ class ExpenseViewModel extends BaseViewModel {
   }
 
   Future<void> refresh() async {
+    logger.i('Refreshing data');
     initialize();
-    rebuildUi();
   }
 }

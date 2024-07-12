@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:spendsmart/app/app.locator.dart';
+import 'package:spendsmart/app/app.logger.dart';
 import 'package:spendsmart/models/app/currency_model.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
@@ -9,11 +10,37 @@ import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpenseDetailViewModel extends BaseViewModel {
+  final logger = getLogger('ExpenseDetailViewModel');
+
   ExpenseDataModel? _expenseDataModel;
   AppLocalizations? _appLocalizations;
 
   final _expenseService = locator<ExpenseService>();
   final _userService = locator<UserSettingsService>();
+
+  num? amount;
+  late DateTime _expenseDate;
+  String? _selectedType;
+  final List<String> _recommendedCategories = [];
+  Set<String> _allCategories = {};
+
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  String? _amountInputValidationMessage;
+  String? _categoryInputValidationMessage;
+
+  TextEditingController get amountController => _amountController;
+  String? get amountInputValidationMessage => _amountInputValidationMessage;
+  bool get isNewEntry => _expenseDataModel == null;
+  DateTime get expenseDate => _expenseDate;
+  List<String> get recommendedCategories => _recommendedCategories;
+  String? get selectedType => _selectedType;
+  Set<String> get allCategories => _allCategories;
+  TextEditingController get categoryController => _categoryController;
+  String? get categoryInputValidationMessage => _categoryInputValidationMessage;
+  TextEditingController get descriptionController => _descriptionController;
 
   ExpenseDetailViewModel({
     ExpenseDataModel? expenseDataModel,
@@ -22,7 +49,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
     Set<String> userList = _expenseService.getAllTypes();
 
     _appLocalizations =
-        lookupAppLocalizations(Locale(_userService.languageString!));
+        lookupAppLocalizations(Locale(_userService.languageString ?? 'en'));
 
     _allCategories = {
       _appLocalizations!.groceries,
@@ -43,22 +70,13 @@ class ExpenseDetailViewModel extends BaseViewModel {
       _selectedType = _expenseDataModel!.type;
       _descriptionController.text = _expenseDataModel!.description ?? "";
     }
+    logger.i('ExpenseDetailViewModel initialized');
   }
 
-  num? amount;
-  final TextEditingController _amountController = TextEditingController();
-  String? _amountInputValidationMessage;
-  get amountController => _amountController;
-  get amountInputValidationMessage => _amountInputValidationMessage;
-
-  bool get isNewEntry => _expenseDataModel == null ? true : false;
-
   String get curerencyText {
-    String symbol = _userService.currencySymbol!;
+    String symbol = _userService.currencySymbol ?? '\$';
     return currencies
-        .firstWhere(
-          (element) => element.currencySymbol == symbol,
-        )
+        .firstWhere((element) => element.currencySymbol == symbol)
         .currency;
   }
 
@@ -67,9 +85,46 @@ class ExpenseDetailViewModel extends BaseViewModel {
       return false;
     }
     _expenseDataModel = constructModel();
+    try {
+      await _expenseService.saveExpenseData(_expenseDataModel!);
+      logger.i('New expense added');
+      return true;
+    } catch (e) {
+      logger.e('Error adding new expense: $e');
+      return false;
+    }
+  }
 
-    await _expenseService.saveExpenseData(_expenseDataModel!);
-    return true;
+  Future<bool> updateExpense() async {
+    if (!validate()) {
+      return false;
+    }
+    var model = constructModel();
+    model = model.copyWith(id: _expenseDataModel!.id);
+
+    if (model == _expenseDataModel) {
+      return false;
+    } else {
+      try {
+        await _expenseService.saveExpenseData(model);
+        logger.i('Expense updated');
+        return true;
+      } catch (e) {
+        logger.e('Error updating expense: $e');
+        return false;
+      }
+    }
+  }
+
+  Future<bool> deleteExpense() async {
+    try {
+      await _expenseService.deleteExpenseData(_expenseDataModel!);
+      logger.i('Expense deleted');
+      return true;
+    } catch (e) {
+      logger.e('Error deleting expense: $e');
+      return false;
+    }
   }
 
   ExpenseDataModel constructModel() {
@@ -86,27 +141,28 @@ class ExpenseDetailViewModel extends BaseViewModel {
     if (amount == null) {
       _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
       rebuildUi();
+      logger.w('Validation failed: amount is null');
       return false;
     }
     if (selectedType == null) {
       _categoryInputValidationMessage = _appLocalizations!.enterACategory;
       rebuildUi();
+      logger.w('Validation failed: selectedType is null');
       return false;
     }
     return true;
   }
 
-  amountChanged(String value) {
+  void amountChanged(String value) {
     _amountInputValidationMessage = null;
 
     if (value.isNotEmpty) {
       try {
-        amount = NumberFormat.decimalPattern(
-          "en",
-        ).parse(value);
+        amount = NumberFormat.decimalPattern("en").parse(value);
       } catch (e) {
         amount = null;
         _amountController.text = "";
+        logger.e('Error parsing amount: $e');
       }
 
       if (amount == null) {
@@ -114,7 +170,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
       } else if (amount! < 0 || amount! > 100000000000000) {
         _amountInputValidationMessage =
             _appLocalizations!.amountRangeNotSupporterd;
-      } else {}
+      }
     } else {
       _amountInputValidationMessage = _appLocalizations!.enterAnAmount;
     }
@@ -122,28 +178,12 @@ class ExpenseDetailViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  late DateTime _expenseDate;
-
-  DateTime get expenseDate => _expenseDate;
-
-  setExpenseDate(DateTime value) {
+  void setExpenseDate(DateTime value) {
     _expenseDate = value;
     rebuildUi();
   }
 
-  String? _selectedType;
-  final List<String> _recommendedCategories = [];
-  Set<String> _allCategories = {};
-  final TextEditingController _categoryController = TextEditingController();
-
-  List<String> get recommendedCategories => _recommendedCategories;
-  String? get selectedType => _selectedType;
-  Set<String> get allCategories => _allCategories;
-  String? _categoryInputValidationMessage;
-  TextEditingController get categoryController => _categoryController;
-  String? get categoryInputValidationMessage => _categoryInputValidationMessage;
-
-  removeCategory(String category) {
+  void removeCategory(String category) {
     _selectedType = null;
     rebuildUi();
   }
@@ -154,7 +194,7 @@ class ExpenseDetailViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  addCategory(String category) {
+  void addCategory(String category) {
     _selectedType = category;
     _categoryController.clear();
     _recommendedCategories.clear();
@@ -162,10 +202,9 @@ class ExpenseDetailViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  addCategoryFromText() {
+  void addCategoryFromText() {
     if (_categoryController.text.isNotEmpty) {
       _selectedType = _categoryController.text.trim();
-
       _categoryController.clear();
       _recommendedCategories.clear();
       _categoryInputValidationMessage = null;
@@ -182,28 +221,5 @@ class ExpenseDetailViewModel extends BaseViewModel {
         return element.toLowerCase().contains(value.toLowerCase());
       }));
     }
-  }
-
-  final TextEditingController _descriptionController = TextEditingController();
-  TextEditingController get descriptionController => _descriptionController;
-
-  Future<bool> updateExpense() async {
-    if (!validate()) {
-      return false;
-    }
-    var model = constructModel();
-    model = model.copyWith(id: _expenseDataModel!.id);
-
-    if (model == _expenseDataModel) {
-      return false;
-    } else {
-      await _expenseService.saveExpenseData(model);
-      return true;
-    }
-  }
-
-  Future<bool> deleteExpense() async {
-    await _expenseService.deleteExpenseData(_expenseDataModel!);
-    return true;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:spendsmart/app/app.logger.dart';
 import 'package:stacked/stacked.dart';
 
 // class HomeViewModel extends BaseViewModel {
@@ -32,13 +33,14 @@ import 'package:stacked/stacked.dart';
 // }
 
 class HomeViewModel extends IndexTrackingViewModel {
+  final logger = getLogger('HomeViewModel');
+
   final GlobalKey<NavigatorState> _expenseViewNavigationKey =
       GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> _summaryViewNavigationKey =
       GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> _settingsViewNavigationKey =
       GlobalKey<NavigatorState>();
-
   final GlobalKey _bottomNavBarKey = GlobalKey();
 
   GlobalKey<NavigatorState> get expenseViewNavigationKey =>
@@ -47,19 +49,42 @@ class HomeViewModel extends IndexTrackingViewModel {
       _summaryViewNavigationKey;
   GlobalKey<NavigatorState> get settingsViewNavigationKey =>
       _settingsViewNavigationKey;
-
   GlobalKey get bottomNavBarKey => _bottomNavBarKey;
 
-  navigateBack({required bool goBack}) async {
+  Future<void> navigateBack({required bool goBack}) async {
     switch (currentIndex) {
       case 0:
         {
           if (_expenseViewNavigationKey.currentState?.canPop() ?? false) {
             _expenseViewNavigationKey.currentState!.pop();
+            logger.i('Navigated back in expense view');
+          } else {
+            logger.i('No navigation stack in expense view to pop');
+          }
+          break;
+        }
+      case 1:
+        {
+          if (_summaryViewNavigationKey.currentState?.canPop() ?? false) {
+            _summaryViewNavigationKey.currentState!.pop();
+            logger.i('Navigated back in summary view');
+          } else {
+            logger.i('No navigation stack in summary view to pop');
+          }
+          break;
+        }
+      case 2:
+        {
+          if (_settingsViewNavigationKey.currentState?.canPop() ?? false) {
+            _settingsViewNavigationKey.currentState!.pop();
+            logger.i('Navigated back in settings view');
+          } else {
+            logger.i('No navigation stack in settings view to pop');
           }
           break;
         }
       default:
+        logger.w('Invalid index for navigation');
     }
   }
 }

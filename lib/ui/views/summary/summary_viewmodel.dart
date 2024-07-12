@@ -1,4 +1,5 @@
 import 'package:spendsmart/app/app.locator.dart';
+import 'package:spendsmart/app/app.logger.dart';
 import 'package:spendsmart/models/app/monthly_summary.dart';
 import 'package:spendsmart/models/app/type_summary.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
@@ -7,22 +8,32 @@ import 'package:spendsmart/services/user_settings_service.dart';
 import 'package:stacked/stacked.dart';
 
 class SummaryViewModel extends BaseViewModel {
+  final logger = getLogger('SummaryViewModel');
+
   final _expenseService = locator<ExpenseService>();
   final _userSettingsService = locator<UserSettingsService>();
+
   List<MonthlySummary> _monthlySummaries = [];
   List<MonthlySummary> get monthlySummaries => _monthlySummaries;
 
-  String get getLocale => _userSettingsService.languageString!;
-
-  String get getCurrency => _userSettingsService.currencySymbol!;
+  String get getLocale => _userSettingsService.languageString ?? 'en';
+  String get getCurrency => _userSettingsService.currencySymbol ?? '\$';
 
   SummaryViewModel() {
     initialize();
+    logger.i('SummaryViewModel initialized');
   }
 
   void initialize() {
-    _monthlySummaries = generateMonthlySummary(_expenseService.getAllExpenses);
-    rebuildUi();
+    logger.i('Initializing monthly summaries');
+    try {
+      _monthlySummaries =
+          generateMonthlySummary(_expenseService.getAllExpenses);
+      rebuildUi();
+      logger.i('Monthly summaries generated successfully');
+    } catch (e) {
+      logger.e('Error generating monthly summaries: $e');
+    }
   }
 
   List<MonthlySummary> generateMonthlySummary(List<ExpenseDataModel> expenses) {
@@ -34,10 +45,7 @@ class SummaryViewModel extends BaseViewModel {
     for (var expense in expenses) {
       String monthKey =
           "${expense.date.year}-${expense.date.month.toString().padLeft(2, '0')}";
-      if (!expensesByMonth.containsKey(monthKey)) {
-        expensesByMonth[monthKey] = [];
-      }
-      expensesByMonth[monthKey]!.add(expense);
+      expensesByMonth.putIfAbsent(monthKey, () => []).add(expense);
     }
 
     // Generate the monthly summary
@@ -47,7 +55,9 @@ class SummaryViewModel extends BaseViewModel {
     for (var monthKey in expensesByMonth.keys) {
       List<ExpenseDataModel> monthlyExpenses = expensesByMonth[monthKey]!;
       DateTime monthDate = DateTime(
-          int.parse(monthKey.split('-')[0]), int.parse(monthKey.split('-')[1]));
+        int.parse(monthKey.split('-')[0]),
+        int.parse(monthKey.split('-')[1]),
+      );
 
       // Calculate total amount for the month
       num totalAmount =
@@ -105,6 +115,7 @@ class SummaryViewModel extends BaseViewModel {
   }
 
   Future<void> refresh() async {
+    logger.i('Refreshing monthly summaries');
     initialize();
   }
 }

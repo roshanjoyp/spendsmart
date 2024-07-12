@@ -706,18 +706,18 @@ class MockLocalStorageService extends _i1.Mock
       ) as _i2.Logger);
 
   @override
-  List<_i9.ExpenseDataModel> get expenses => (super.noSuchMethod(
-        Invocation.getter(#expenses),
-        returnValue: <_i9.ExpenseDataModel>[],
-        returnValueForMissingStub: <_i9.ExpenseDataModel>[],
-      ) as List<_i9.ExpenseDataModel>);
-
-  @override
   _i6.Future<void> get initializationCompleted => (super.noSuchMethod(
         Invocation.getter(#initializationCompleted),
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
+
+  @override
+  List<_i9.ExpenseDataModel> get expenses => (super.noSuchMethod(
+        Invocation.getter(#expenses),
+        returnValue: <_i9.ExpenseDataModel>[],
+        returnValueForMissingStub: <_i9.ExpenseDataModel>[],
+      ) as List<_i9.ExpenseDataModel>);
 
   @override
   int get listenersCount => (super.noSuchMethod(
@@ -761,14 +761,15 @@ class MockLocalStorageService extends _i1.Mock
       ) as _i6.Future<void>);
 
   @override
-  dynamic saveExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
-      super.noSuchMethod(
+  _i6.Future<void> saveExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
+      (super.noSuchMethod(
         Invocation.method(
           #saveExpenseData,
           [expenseDataModel],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> deleteAllData() => (super.noSuchMethod(
@@ -833,11 +834,35 @@ class MockLocalStorageService extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
   @override
+  _i2.Logger get logger => (super.noSuchMethod(
+        Invocation.getter(#logger),
+        returnValue: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+        returnValueForMissingStub: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+      ) as _i2.Logger);
+
+  @override
   List<_i9.ExpenseDataModel> get getAllExpenses => (super.noSuchMethod(
         Invocation.getter(#getAllExpenses),
         returnValue: <_i9.ExpenseDataModel>[],
         returnValueForMissingStub: <_i9.ExpenseDataModel>[],
       ) as List<_i9.ExpenseDataModel>);
+
+  @override
+  _i6.Future<void> deleteExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteExpenseData,
+          [expenseDataModel],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> saveExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
@@ -851,15 +876,14 @@ class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
       ) as _i6.Future<void>);
 
   @override
-  _i6.Future<void> deleteExpenseData(_i9.ExpenseDataModel? expenseDataModel) =>
-      (super.noSuchMethod(
+  Set<String> getAllTypes() => (super.noSuchMethod(
         Invocation.method(
-          #deleteExpenseData,
-          [expenseDataModel],
+          #getAllTypes,
+          [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: <String>{},
+        returnValueForMissingStub: <String>{},
+      ) as Set<String>);
 }
 
 /// A class which mocks [UserSettingsService].
@@ -867,6 +891,19 @@ class MockExpenseService extends _i1.Mock implements _i10.ExpenseService {
 /// See the documentation for Mockito's code generation for more information.
 class MockUserSettingsService extends _i1.Mock
     implements _i11.UserSettingsService {
+  @override
+  _i2.Logger get logger => (super.noSuchMethod(
+        Invocation.getter(#logger),
+        returnValue: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+        returnValueForMissingStub: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+      ) as _i2.Logger);
+
   @override
   bool get pushNotificationsEnabled => (super.noSuchMethod(
         Invocation.getter(#pushNotificationsEnabled),
@@ -925,13 +962,15 @@ class MockUserSettingsService extends _i1.Mock
       ) as _i6.Future<void>);
 
   @override
-  dynamic setPushNotificationEnabled(bool? value) => super.noSuchMethod(
+  _i6.Future<void> setPushNotificationEnabled(bool? value) =>
+      (super.noSuchMethod(
         Invocation.method(
           #setPushNotificationEnabled,
           [value],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> setPushNotificationTime(
@@ -994,6 +1033,19 @@ class MockUserSettingsService extends _i1.Mock
 class MockLocalNotificationService extends _i1.Mock
     implements _i12.LocalNotificationService {
   @override
+  _i2.Logger get logger => (super.noSuchMethod(
+        Invocation.getter(#logger),
+        returnValue: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+        returnValueForMissingStub: _FakeLogger_0(
+          this,
+          Invocation.getter(#logger),
+        ),
+      ) as _i2.Logger);
+
+  @override
   _i6.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
           #init,
@@ -1004,7 +1056,7 @@ class MockLocalNotificationService extends _i1.Mock
       ) as _i6.Future<void>);
 
   @override
-  _i6.Future<dynamic> onDidReceiveLocalNotification(
+  _i6.Future<void> onDidReceiveLocalNotification(
     int? id,
     String? title,
     String? body,
@@ -1020,25 +1072,14 @@ class MockLocalNotificationService extends _i1.Mock
             payload,
           ],
         ),
-        returnValue: _i6.Future<dynamic>.value(),
-        returnValueForMissingStub: _i6.Future<dynamic>.value(),
-      ) as _i6.Future<dynamic>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
-  _i6.Future<dynamic> onSelectNotification(String? payload) =>
-      (super.noSuchMethod(
+  _i6.Future<void> requestNotificationPermission() => (super.noSuchMethod(
         Invocation.method(
-          #onSelectNotification,
-          [payload],
-        ),
-        returnValue: _i6.Future<dynamic>.value(),
-        returnValueForMissingStub: _i6.Future<dynamic>.value(),
-      ) as _i6.Future<dynamic>);
-
-  @override
-  _i6.Future<void> requestNotificaitonPermission() => (super.noSuchMethod(
-        Invocation.method(
-          #requestNotificaitonPermission,
+          #requestNotificationPermission,
           [],
         ),
         returnValue: _i6.Future<void>.value(),
