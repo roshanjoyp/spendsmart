@@ -65,50 +65,61 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: kcPrimaryColor.withOpacity(.1),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Material(
+                                  elevation: 10,
                                   borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: ListTile(
-                                  leading: const SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.calendar_today,
-                                        color: kcPrimaryColor,
+                                  child: Container(
+                                    //margin: const EdgeInsets.symmetric(vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: kcPrimaryColor.withOpacity(.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: ListTile(
+                                      leading: const SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            color: kcPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        DateFormat('d EEEE MMM, y')
+                                            .format(dailySummary.date),
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        "${dailySummary.percentageChange.abs().toStringAsFixed(2)}% ${dailySummary.percentageChange >= 0 ? 'more' : 'less'} than previous day",
+                                        style: TextStyle(
+                                          color:
+                                              dailySummary.percentageChange >= 0
+                                                  ? Colors.red
+                                                  : Colors.green,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        NumberFormatUtil
+                                                .formatAmountUsingNumberFormatCompact(
+                                                    amount: dailySummary
+                                                        .totalAmount
+                                                        .toDouble(),
+                                                    locale: viewModel.getLocale,
+                                                    currency:
+                                                        viewModel.getCurrency)
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                  ),
-                                  title: Text(
-                                    DateFormat('d EEEE MMM, y')
-                                        .format(dailySummary.date),
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                    "${dailySummary.percentageChange.abs().toStringAsFixed(2)}% ${dailySummary.percentageChange >= 0 ? 'more' : 'less'} than previous day",
-                                    style: TextStyle(
-                                      color: dailySummary.percentageChange >= 0
-                                          ? Colors.red
-                                          : Colors.green,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  trailing: Text(
-                                    NumberFormatUtil
-                                            .formatAmountUsingNumberFormatCompact(
-                                                amount: dailySummary.totalAmount
-                                                    .toDouble(),
-                                                locale: viewModel.getLocale,
-                                                currency: viewModel.getCurrency)
-                                        .toString(),
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -117,51 +128,62 @@ class ExpenseView extends StackedView<ExpenseViewModel> {
                                   onTap: () {
                                     viewModel.editExpense(expense);
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: kcPrimaryColor.withOpacity(.03),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Material(
+                                      elevation: 10,
                                       borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    margin: const EdgeInsets.only(bottom: 8),
-                                    child: ListTile(
-                                      leading: Container(
-                                        width: 40,
-                                        height: 40,
+                                      child: Container(
                                         decoration: BoxDecoration(
-                                          color: kcPrimaryColor,
+                                          color:
+                                              kcPrimaryColor.withOpacity(.03),
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            expense.type[0].toUpperCase(),
+                                        //margin: const EdgeInsets.only(bottom: 8),
+                                        child: ListTile(
+                                          leading: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: kcPrimaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                expense.type[0].toUpperCase(),
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                              ),
+                                            ),
+                                          ),
+                                          title: Text(
+                                            expense.type,
                                             style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          subtitle: Text(
+                                            expense.description ??
+                                                'No description',
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                          trailing: Text(
+                                            NumberFormatUtil
+                                                .formatAmountUsingNumberFormatCompact(
+                                                    amount: expense.amount
+                                                        .toDouble(),
+                                                    locale: viewModel.getLocale,
+                                                    currency:
+                                                        viewModel.getCurrency),
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      ),
-                                      title: Text(
-                                        expense.type,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      subtitle: Text(
-                                        expense.description ?? 'No description',
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                      trailing: Text(
-                                        NumberFormatUtil
-                                            .formatAmountUsingNumberFormatCompact(
-                                                amount:
-                                                    expense.amount.toDouble(),
-                                                locale: viewModel.getLocale,
-                                                currency:
-                                                    viewModel.getCurrency),
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),

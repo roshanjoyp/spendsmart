@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:spendsmart/ui/common/app_colors.dart';
 import 'package:stacked/stacked.dart';
 
+import 'components/daily_notification_tile.dart';
+import 'components/delete_data_tile.dart';
+import 'components/generate_mock_data_tile.dart';
+import 'components/language_currency_tile.dart';
+import 'components/notification_time_tile.dart';
 import 'settings_viewmodel.dart';
 
 class SettingsView extends StackedView<SettingsViewModel> {
@@ -17,50 +21,20 @@ class SettingsView extends StackedView<SettingsViewModel> {
       backgroundColor: Colors.white,
       body: ListView(
         children: [
-          GestureDetector(
-              onTap: () => viewModel.deleteAllData(),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  title: Text("Delete All Data"),
-                  leading: Icon(
-                    Icons.delete,
-                    color: kcDeleteColor,
-                  ),
-                ),
-              )),
-          GestureDetector(
-              onTap: () => viewModel.generatemockData(),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  title: Text("Generate mock data"),
-                  leading: Icon(
-                    Icons.generating_tokens,
-                    color: Colors.green,
-                  ),
-                ),
-              )),
-          GestureDetector(
-              onTap: () => viewModel.showNotification(),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  title: Text("Show Notification"),
-                  leading: Icon(
-                    Icons.notifications,
-                    color: Colors.purple,
-                  ),
-                ),
-              ))
+          LanguageCurrencyTile(viewModel: viewModel),
+          DailyNotificationTile(viewModel: viewModel),
+          if (viewModel.isDailyNotificationOn)
+            NotificationTimeTile(viewModel: viewModel),
+          const SizedBox(height: 50),
+          GenerateMockDataTile(viewModel: viewModel),
+          DeleteDataTile(viewModel: viewModel),
+          const SizedBox(height: 50),
         ],
       ),
     );
   }
 
   @override
-  SettingsViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
+  SettingsViewModel viewModelBuilder(BuildContext context) =>
       SettingsViewModel();
 }

@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:spendsmart/app/app.locator.dart';
 import 'package:spendsmart/app/app.router.dart';
+import 'package:spendsmart/constants/app_defaults.dart';
+import 'package:spendsmart/models/app/currency_model.dart';
+import 'package:spendsmart/models/app/language_model.dart';
 import 'package:spendsmart/models/local/expense_data_model.dart';
 import 'package:spendsmart/services/expense_service.dart';
 import 'package:spendsmart/services/local_notification_service.dart';
@@ -15,6 +18,28 @@ class SettingsViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _expenseService = locator<ExpenseService>();
   final _notificationService = locator<LocalNotificationService>();
+
+  String get language {
+    String code = _userSettingsService.languageString!;
+    return languages
+        .firstWhere((element) => element.languageCountryCode == code)
+        .language;
+  }
+
+  String get currency {
+    String currencySymbol = _userSettingsService.currencySymbol!;
+    var item = currencies
+        .firstWhere((element) => element.currencySymbol == currencySymbol);
+    return "${item.currencySymbol} ----- ${item.currency}";
+  }
+
+  get isDailyNotificationOn => _userSettingsService.pushNotificationsEnabled;
+  TimeOfDay get notificationTime {
+    int hour = _userSettingsService.pushNotificationTimeHour ?? appDefaultHour;
+    int minute =
+        _userSettingsService.pushNotificationTimeMinute ?? appDefaultMinute;
+    return TimeOfDay(hour: hour, minute: minute);
+  }
 
   Future<void> deleteAllData() async {
     await _userSettingsService.deleteAllData();
@@ -45,6 +70,7 @@ class SettingsViewModel extends BaseViewModel {
   showNotification() async {
     await _notificationService.cancelAllNotifications();
     TimeOfDay time = TimeOfDay.now();
+
     TimeOfDay newTimeOfDay = TimeOfDay(
       hour: time.hour,
       minute: time.minute + 1,
@@ -54,5 +80,40 @@ class SettingsViewModel extends BaseViewModel {
     await _notificationService.scheduleDailyNotification(newTimeOfDay);
 
     //_notificationService.scheduleDailyNotification(time);
+  }
+
+  void onLanguageCurrencyTap() {
+    // Implement navigation to language and currency settings
+    //_navigationService.navigateToLanguageView();
+  }
+
+  void onDailyNotificationToggle(bool value) async {
+    await _userSettingsService.setPushNotificationEnabled(value);
+
+    if (value) {
+      TimeOfDay time = _userSettingsService.pushNotificationTimeHour == null
+          ? TimeOfDay(hour: appDefaultHour, minute: appDefaultMinute)
+          : TimeOfDay(
+              hour: _userSettingsService.pushNotificationTimeHour!,
+              minute: _userSettingsService.pushNotificationTimeMinute!);
+      _notificationService.scheduleDailyNotification(time);
+    } else {
+      _notificationService.cancelAllNotifications();
+    }
+    rebuildUi();
+  }
+
+  void onNotificationTimeTap() {
+    // Implement time picker logic
+  }
+
+  void generateMockData() {
+    // Implement mock data generation
+  }
+
+  void updateNotificationTime(TimeOfDay picked) async {
+    await _userSettingsService.setPushNotificationTime(
+        picked.hour, picked.minute);
+    rebuildUi();
   }
 }

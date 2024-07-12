@@ -40,46 +40,54 @@ class SummaryView extends StackedView<SummaryViewModel> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: kcPrimaryColor,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Material(
+                              elevation: 20,
                               borderRadius: BorderRadius.circular(8),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: ListTile(
-                              leading: const Icon(
-                                Icons.calendar_today,
-                                color: Colors.white,
-                              ),
-                              title: Text(
-                                DateFormat('MMMM yyyy')
-                                    .format(monthlySummary.month),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              subtitle: Text(
-                                "${monthlySummary.percentageChange.abs().toStringAsFixed(2)}% ${monthlySummary.percentageChange >= 0 ? 'more' : 'less'} than previous month",
-                                style: TextStyle(
-                                  color: monthlySummary.percentageChange >= 0
-                                      ? Colors.red
-                                      : const Color.fromARGB(255, 75, 233, 80),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: kcPrimaryColor,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                              trailing: Text(
-                                NumberFormatUtil
-                                    .formatAmountUsingNumberFormatCompact(
+                                // margin: const EdgeInsets.symmetric(
+                                //     horizontal: 8, vertical: 4),
+                                child: ListTile(
+                                  leading: const Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.white,
+                                  ),
+                                  title: Text(
+                                    DateFormat('MMMM yyyy')
+                                        .format(monthlySummary.month),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    "${monthlySummary.percentageChange.abs().toStringAsFixed(2)}% ${monthlySummary.percentageChange >= 0 ? 'more' : 'less'} than previous month",
+                                    style: TextStyle(
+                                      color:
+                                          monthlySummary.percentageChange >= 0
+                                              ? Colors.red
+                                              : const Color.fromARGB(
+                                                  255, 75, 233, 80),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    NumberFormatUtil.formatAmountUsingNumberFormatCompact(
                                         amount: monthlySummary.totalAmount
                                             .toDouble(),
                                         locale: viewModel.getLocale,
                                         currency: viewModel.getCurrency),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

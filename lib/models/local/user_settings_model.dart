@@ -5,26 +5,30 @@ class UserSettingsModel {
   final String? language;
   final String? currency;
   final bool? pushNotificationsEnabled;
-  final DateTime? pushNotificationTime;
+  final int? hour;
+  final int? minute;
   const UserSettingsModel({
     this.language,
     this.currency,
     this.pushNotificationsEnabled,
-    this.pushNotificationTime,
+    this.hour,
+    this.minute,
   });
 
   UserSettingsModel copyWith({
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,
-    DateTime? pushNotificationTime,
+    int? hour,
+    int? minute,
   }) {
     return UserSettingsModel(
       language: language ?? this.language,
       currency: currency ?? this.currency,
       pushNotificationsEnabled:
           pushNotificationsEnabled ?? this.pushNotificationsEnabled,
-      pushNotificationTime: pushNotificationTime ?? this.pushNotificationTime,
+      hour: hour ?? this.hour,
+      minute: minute ?? this.minute,
     );
   }
 
@@ -33,7 +37,8 @@ class UserSettingsModel {
       'language': language,
       'currency': currency,
       'pushNotificationsEnabled': pushNotificationsEnabled,
-      'pushNotificationTime': pushNotificationTime?.millisecondsSinceEpoch,
+      'hour': hour,
+      'minute': minute,
     };
   }
 
@@ -44,10 +49,8 @@ class UserSettingsModel {
       pushNotificationsEnabled: map['pushNotificationsEnabled'] != null
           ? map["pushNotificationsEnabled"] ?? false
           : null,
-      pushNotificationTime: map['pushNotificationTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              (map["pushNotificationTime"] ?? 0) ?? 0)
-          : null,
+      hour: map['hour'] != null ? map["hour"] ?? 0 : null,
+      minute: map['minute'] != null ? map["minute"] ?? 0 : null,
     );
   }
 
@@ -58,7 +61,7 @@ class UserSettingsModel {
 
   @override
   String toString() {
-    return 'UserSettingsModel(language: $language, currency: $currency, pushNotificationsEnabled: $pushNotificationsEnabled, pushNotificationTime: $pushNotificationTime)';
+    return 'UserSettingsModel(language: $language, currency: $currency, pushNotificationsEnabled: $pushNotificationsEnabled, hour: $hour, minute: $minute)';
   }
 
   @override
@@ -68,7 +71,8 @@ class UserSettingsModel {
     return other.language == language &&
         other.currency == currency &&
         other.pushNotificationsEnabled == pushNotificationsEnabled &&
-        other.pushNotificationTime == pushNotificationTime;
+        other.hour == hour &&
+        other.minute == minute;
   }
 
   @override
@@ -76,6 +80,7 @@ class UserSettingsModel {
     return language.hashCode ^
         currency.hashCode ^
         pushNotificationsEnabled.hashCode ^
-        pushNotificationTime.hashCode;
+        hour.hashCode ^
+        minute.hashCode;
   }
 }

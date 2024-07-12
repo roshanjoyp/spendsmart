@@ -15,17 +15,23 @@ class UserSettingsService with ListenableServiceMixin {
 
   String? get languageString => userSettingsData?.language;
   String? get currencySymbol => userSettingsData?.currency;
+  bool get pushNotificationsEnabled =>
+      userSettingsData?.pushNotificationsEnabled ?? false;
+  int? get pushNotificationTimeHour => userSettingsData?.hour;
+  int? get pushNotificationTimeMinute => userSettingsData?.minute;
 
   void updateUserSettings({
     String? language,
     String? currency,
     bool? pushNotificationsEnabled,
-    DateTime? pushNotificationTime,
+    int? hour,
+    int? minute,
   }) async {
     _localStorageService.setUserSettingsData(
       currency: currency,
       language: language,
-      pushNotificationTime: pushNotificationTime,
+      hour: hour,
+      minute: minute,
       pushNotificationsEnabled: pushNotificationsEnabled,
     );
     notifyListeners();
@@ -37,5 +43,18 @@ class UserSettingsService with ListenableServiceMixin {
 
   Future<void> deleteAllData() async {
     await _localStorageService.deleteAllData();
+  }
+
+  setPushNotificationEnabled(bool value) async {
+    await _localStorageService.setUserSettingsData(
+      pushNotificationsEnabled: value,
+    );
+  }
+
+  Future<void> setPushNotificationTime(int hour, int minute) async {
+    await _localStorageService.setUserSettingsData(
+      hour: hour,
+      minute: minute,
+    );
   }
 }
